@@ -275,6 +275,7 @@ export default function Home() {
   return (
     <>
       <Head>
+        <meta name="google-site-verification" content="WNU3XQOEJ7qSnToDnIesJHmelwYfWrMKoiOV_KxiHbU" />
         <title>CanMyPetEat — Free Pet Food Safety Checker for Dogs & Cats</title>
         <meta name="description" content="Instantly check if food ingredients are safe for your dog or cat. Free tool with 80+ ingredients database. No sign-up required." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
