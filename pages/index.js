@@ -82,6 +82,27 @@ const INGREDIENT_DB = {
     { name: "ethoxyquin", display: "Ethoxyquin", pets: ["dog", "cat"], severity: "high",
       description: "A chemical preservative banned in human food in many countries. Linked to liver and kidney damage in pets.",
       symptoms: "Liver damage, kidney failure, cancer risk" },
+    { name: "hop", display: "Hops", pets: ["dog"], severity: "high",
+      description: "Used in beer brewing. Causes malignant hyperthermia in dogs — a rapid, uncontrollable rise in body temperature.",
+      symptoms: "Panting, elevated temperature, seizures, death" },
+    { name: "marijuana", display: "Marijuana / Cannabis", pets: ["dog", "cat"], severity: "high",
+      description: "THC is toxic to pets. Edibles are especially dangerous due to concentrated THC and often containing chocolate or xylitol.",
+      symptoms: "Disorientation, drooling, tremors, seizures, coma" },
+    { name: "cannabis", display: "Cannabis / THC", pets: ["dog", "cat"], severity: "high",
+      description: "All forms of cannabis containing THC are toxic to pets, including edibles, oils, and plant material.",
+      symptoms: "Lethargy, wobbling, drooling, urinary incontinence, seizures" },
+    { name: "tobacco", display: "Tobacco / Nicotine", pets: ["dog", "cat"], severity: "high",
+      description: "Nicotine is extremely toxic to pets. Cigarette butts, nicotine gum, and patches are all dangerous.",
+      symptoms: "Vomiting, tremors, elevated heart rate, collapse, death" },
+    { name: "star fruit", display: "Star Fruit", pets: ["dog", "cat"], severity: "high",
+      description: "Contains soluble calcium oxalates that can cause acute kidney failure in dogs.",
+      symptoms: "Vomiting, drooling, kidney failure" },
+    { name: "wild mushroom", display: "Wild Mushrooms", pets: ["dog", "cat"], severity: "high",
+      description: "Many wild mushroom species are deadly to pets. Store-bought plain mushrooms are generally safe, but wild mushrooms should always be avoided.",
+      symptoms: "Vomiting, diarrhea, liver failure, seizures, death" },
+    { name: "persimmon", display: "Persimmon", pets: ["dog", "cat"], severity: "high",
+      description: "Seeds and pit can cause intestinal blockage and enteritis (inflammation of the intestine).",
+      symptoms: "Vomiting, diarrhea, abdominal pain, intestinal obstruction" },
   ],
   caution: [
     { name: "avocado", display: "Avocado", pets: ["dog", "cat"], severity: "moderate",
@@ -168,6 +189,177 @@ const INGREDIENT_DB = {
     { name: "menadione", display: "Menadione (Vitamin K3)", pets: ["dog", "cat"], severity: "moderate",
       description: "Synthetic vitamin K supplement banned in human supplements in many countries.",
       symptoms: "Allergic reactions, cytotoxicity, liver issues" },
+    { name: "bacon", display: "Bacon", pets: ["dog", "cat"], severity: "moderate",
+      description: "Very high in fat and salt. Can trigger pancreatitis. Occasional tiny piece is unlikely to harm, but not recommended.",
+      symptoms: "Vomiting, diarrhea, pancreatitis from high fat" },
+    { name: "ham", display: "Ham", pets: ["dog", "cat"], severity: "moderate",
+      description: "Very high in sodium and fat. Processed meats often contain preservatives harmful to pets.",
+      symptoms: "Excessive thirst, vomiting, diarrhea, pancreatitis" },
+    { name: "sausage", display: "Sausage", pets: ["dog", "cat"], severity: "moderate",
+      description: "High in fat, salt, and often contains garlic, onion powder, and other harmful seasonings.",
+      symptoms: "GI upset, pancreatitis risk, potential onion/garlic toxicity" },
+    { name: "hot dog", display: "Hot Dog", pets: ["dog", "cat"], severity: "moderate",
+      description: "Highly processed, high in sodium and fat. May contain garlic powder, onion powder, and nitrates.",
+      symptoms: "GI upset, excessive thirst, potential sodium poisoning" },
+    { name: "pepperoni", display: "Pepperoni", pets: ["dog", "cat"], severity: "moderate",
+      description: "Extremely high in sodium, fat, and spices. Often contains garlic and onion powder.",
+      symptoms: "Digestive upset, excessive thirst, pancreatitis" },
+    { name: "salami", display: "Salami", pets: ["dog", "cat"], severity: "moderate",
+      description: "Cured meat high in salt, fat, and often contains garlic. Not suitable for pets.",
+      symptoms: "GI upset, excessive thirst, pancreatitis risk" },
+    { name: "jerky", display: "Jerky / Dried Meat", pets: ["dog", "cat"], severity: "low",
+      description: "Commercial jerky may contain garlic, onion, xylitol, or excessive salt. Plain unseasoned jerky is safer.",
+      symptoms: "Varies by ingredients — check label for onion, garlic, xylitol" },
+    { name: "liver", display: "Liver (large amounts)", pets: ["dog", "cat"], severity: "low",
+      description: "Safe in small amounts but too much can cause vitamin A toxicity. Treat, not a meal replacement.",
+      symptoms: "Vitamin A toxicity: bone problems, lethargy, weight loss" },
+    { name: "pizza", display: "Pizza", pets: ["dog", "cat"], severity: "moderate",
+      description: "Combination of high fat cheese, garlic/onion in sauce, high sodium, and often processed meats. Multiple risk factors.",
+      symptoms: "GI upset, potential garlic/onion toxicity, pancreatitis" },
+    { name: "french fry", display: "French Fries", pets: ["dog", "cat"], severity: "low",
+      description: "High in fat, salt, and often cooked in oils that can upset pet stomachs. One or two won't hurt, but not a good habit.",
+      symptoms: "Mild GI upset, excessive thirst from salt" },
+    { name: "chip", display: "Chips / Crisps", pets: ["dog", "cat"], severity: "low",
+      description: "High in salt and fat. Flavored varieties may contain onion or garlic powder.",
+      symptoms: "Excessive thirst, GI upset" },
+    { name: "popcorn", display: "Popcorn", pets: ["dog", "cat"], severity: "low",
+      description: "Plain air-popped popcorn is safe in small amounts. Buttered, salted, or flavored popcorn is not recommended.",
+      symptoms: "Mild GI upset from butter/salt, choking hazard from kernels" },
+    { name: "bread", display: "Bread", pets: ["dog", "cat"], severity: "low",
+      description: "Plain bread in small amounts is safe but offers no nutritional value. Avoid bread with raisins, garlic, nuts, or xylitol.",
+      symptoms: "None from plain bread; check ingredients for toxic additions" },
+    { name: "toast", display: "Toast", pets: ["dog", "cat"], severity: "low",
+      description: "Plain toast is safe in small amounts. Avoid buttered toast or toast with toppings like avocado, garlic spread, etc.",
+      symptoms: "None from plain toast in moderation" },
+    { name: "noodle", display: "Noodles / Pasta", pets: ["dog", "cat"], severity: "low",
+      description: "Plain cooked noodles are safe in small amounts but offer little nutrition. Avoid sauces containing garlic, onion, or heavy cream.",
+      symptoms: "None from plain noodles; GI upset from rich sauces" },
+    { name: "pasta", display: "Pasta", pets: ["dog", "cat"], severity: "low",
+      description: "Plain cooked pasta is safe but nutritionally empty for pets. Never serve with garlic, onion, or creamy/tomato sauces.",
+      symptoms: "None from plain pasta; check sauce ingredients" },
+    { name: "potato", display: "Cooked Potato", pets: ["dog", "cat"], severity: "low",
+      description: "Plain cooked potato is safe. Raw potato and green potatoes contain solanine which is toxic. Never feed raw.",
+      symptoms: "Raw/green: vomiting, diarrhea, lethargy. Cooked plain: safe" },
+    { name: "tomato", display: "Ripe Tomato", pets: ["dog", "cat"], severity: "low",
+      description: "Ripe red tomatoes are generally safe in small amounts. Green tomatoes, stems, and leaves contain solanine and are toxic.",
+      symptoms: "Green parts: drooling, GI upset, lethargy, weakness" },
+    { name: "garlic bread", display: "Garlic Bread", pets: ["dog", "cat"], severity: "moderate",
+      description: "Contains garlic which is toxic to pets, plus high fat from butter. Even small amounts are risky.",
+      symptoms: "GI upset, potential garlic toxicity with larger amounts" },
+    { name: "ice cream", display: "Ice Cream", pets: ["dog", "cat"], severity: "low",
+      description: "High in sugar and lactose. Most pets are lactose intolerant. Some flavors (chocolate, coffee) are toxic.",
+      symptoms: "Diarrhea, gas, vomiting. Chocolate flavors are toxic" },
+    { name: "candy", display: "Candy / Sweets", pets: ["dog", "cat"], severity: "moderate",
+      description: "High sugar content, and sugar-free varieties often contain xylitol which is lethal to dogs.",
+      symptoms: "GI upset from sugar; xylitol: hypoglycemia, liver failure, death" },
+    { name: "cookie", display: "Cookies", pets: ["dog", "cat"], severity: "moderate",
+      description: "May contain chocolate, raisins, macadamia nuts, or xylitol. Even plain cookies are high in sugar and fat.",
+      symptoms: "Varies by ingredients — check for chocolate, raisins, xylitol" },
+    { name: "cake", display: "Cake", pets: ["dog", "cat"], severity: "moderate",
+      description: "High in sugar and fat. May contain chocolate, xylitol, raisins, coffee, or macadamia nuts.",
+      symptoms: "GI upset, potential toxicity depending on ingredients" },
+    { name: "donut", display: "Donut / Doughnut", pets: ["dog", "cat"], severity: "moderate",
+      description: "High in sugar, fat, and may contain chocolate glaze or xylitol. No nutritional value for pets.",
+      symptoms: "GI upset, obesity risk, potential chocolate toxicity" },
+    { name: "cinnamon", display: "Cinnamon", pets: ["dog", "cat"], severity: "low",
+      description: "Small amounts are not toxic but can irritate the mouth and digestive tract. Cinnamon powder can cause breathing issues if inhaled.",
+      symptoms: "Mouth irritation, coughing, breathing difficulty from powder" },
+    { name: "ginger", display: "Ginger", pets: ["dog", "cat"], severity: "low",
+      description: "Safe in small amounts and may help with nausea. Too much can cause heartburn and GI upset.",
+      symptoms: "Mild GI upset in large amounts" },
+    { name: "honey", display: "Honey", pets: ["dog", "cat"], severity: "low",
+      description: "Safe in tiny amounts for adult dogs. High sugar content. Do not give to puppies or cats with diabetes. Raw honey may contain botulism spores dangerous to puppies.",
+      symptoms: "None in small amounts; tooth decay and obesity with regular use" },
+    { name: "mustard", display: "Mustard", pets: ["dog", "cat"], severity: "moderate",
+      description: "Mustard seeds are toxic to dogs and cats. Prepared mustard also often contains other harmful ingredients.",
+      symptoms: "Vomiting, diarrhea, abdominal pain" },
+    { name: "pepper", display: "Black Pepper / Spicy Pepper", pets: ["dog", "cat"], severity: "low",
+      description: "Small amounts of black pepper are not toxic but can irritate the GI tract. Spicy peppers (jalapeño, chili) cause more distress.",
+      symptoms: "Sneezing, GI irritation, diarrhea, stomach pain" },
+    { name: "jalapeno", display: "Jalapeño / Hot Pepper", pets: ["dog", "cat"], severity: "moderate",
+      description: "Capsaicin in hot peppers causes significant GI distress in pets. Dogs and cats have much lower tolerance than humans.",
+      symptoms: "Drooling, vomiting, diarrhea, stomach pain" },
+    { name: "almond", display: "Almonds", pets: ["dog", "cat"], severity: "low",
+      description: "Not toxic but hard to digest and a choking hazard. Salted or flavored almonds add extra risks.",
+      symptoms: "Vomiting, diarrhea, potential choking or obstruction" },
+    { name: "walnut", display: "Walnuts", pets: ["dog"], severity: "moderate",
+      description: "Black walnuts are toxic. English walnuts are not toxic but are high in fat and can harbor mold that produces tremorgenic mycotoxins.",
+      symptoms: "Vomiting, tremors, seizures (from moldy walnuts)" },
+    { name: "pistachio", display: "Pistachios", pets: ["dog", "cat"], severity: "low",
+      description: "Not toxic but high in fat. Can cause pancreatitis. Shells are a choking hazard and can cause intestinal blockage.",
+      symptoms: "GI upset, pancreatitis risk, choking on shells" },
+    { name: "cashew", display: "Cashews", pets: ["dog"], severity: "low",
+      description: "Safe in small amounts when plain and unsalted. High in fat, so moderation is key.",
+      symptoms: "GI upset and pancreatitis risk in large amounts" },
+    { name: "pecan", display: "Pecans", pets: ["dog"], severity: "moderate",
+      description: "Contains juglone which is toxic to dogs. Can also harbor mold producing tremorgenic mycotoxins.",
+      symptoms: "Vomiting, diarrhea, tremors, seizures" },
+    { name: "pineapple", display: "Pineapple", pets: ["dog", "cat"], severity: "low",
+      description: "Flesh is safe in small amounts. High in sugar and acid. Remove skin and hard core before serving.",
+      symptoms: "GI upset from acidity or large amounts" },
+    { name: "orange", display: "Orange", pets: ["dog", "cat"], severity: "low",
+      description: "Flesh is safe in small amounts but high in sugar and citric acid. Peel and seeds should be avoided.",
+      symptoms: "GI upset, vomiting from citric acid or essential oils in peel" },
+    { name: "peach", display: "Peach", pets: ["dog", "cat"], severity: "low",
+      description: "Flesh is safe. The pit contains cyanide and is a major choking/obstruction hazard. Always remove pit.",
+      symptoms: "Choking from pit; cyanide poisoning if pit is crushed and consumed" },
+    { name: "plum", display: "Plum", pets: ["dog", "cat"], severity: "low",
+      description: "Flesh is safe in small amounts. Pit, stem, and leaves contain cyanide. Always remove pit.",
+      symptoms: "Choking from pit; cyanide risk if pit is crushed" },
+    { name: "kiwi", display: "Kiwi", pets: ["dog", "cat"], severity: "low",
+      description: "Flesh is safe in small amounts. Remove skin as it's hard to digest. High in vitamin C.",
+      symptoms: "Mild GI upset if too much; skin may cause irritation" },
+    { name: "papaya", display: "Papaya", pets: ["dog", "cat"], severity: "low",
+      description: "Flesh is safe and contains digestive enzymes. Remove seeds and skin before serving.",
+      symptoms: "GI upset from seeds or large amounts" },
+    { name: "fig", display: "Fig", pets: ["dog", "cat"], severity: "low",
+      description: "Fresh figs in tiny amounts are safe. Fig plant leaves and sap are toxic. Dried figs are too high in sugar.",
+      symptoms: "Drooling, vomiting from fig plant; GI upset from too many figs" },
+    { name: "pomegranate", display: "Pomegranate", pets: ["dog", "cat"], severity: "low",
+      description: "Seeds and flesh can cause GI upset due to tannins. Not toxic but not recommended.",
+      symptoms: "Vomiting, stomach pain" },
+    { name: "taco", display: "Taco", pets: ["dog", "cat"], severity: "moderate",
+      description: "Typically contains onion, garlic, spices, high-fat cheese, and other ingredients harmful to pets.",
+      symptoms: "GI upset, potential onion/garlic toxicity" },
+    { name: "crab", display: "Crab", pets: ["dog", "cat"], severity: "low",
+      description: "Cooked crab meat is safe in small amounts. Remove all shell. Raw crab can carry parasites. High in sodium.",
+      symptoms: "None from plain cooked crab meat; shell can cause choking/blockage" },
+    { name: "lobster", display: "Lobster", pets: ["dog", "cat"], severity: "low",
+      description: "Cooked lobster meat is safe in small amounts. Remove shell completely. High in sodium and cholesterol.",
+      symptoms: "GI upset from shell; allergic reaction possible" },
+    { name: "squid", display: "Squid / Calamari", pets: ["dog", "cat"], severity: "low",
+      description: "Plain cooked squid is safe in small amounts. Fried calamari is too high in fat and salt.",
+      symptoms: "None from plain cooked; GI upset from fried or seasoned" },
+    { name: "oyster", display: "Oyster", pets: ["dog", "cat"], severity: "low",
+      description: "Cooked oysters are safe in moderation and rich in zinc and omega-3s. Never feed raw due to bacteria risk.",
+      symptoms: "GI upset from raw oysters; none from cooked in moderation" },
+    { name: "clam", display: "Clams", pets: ["dog", "cat"], severity: "low",
+      description: "Cooked clams are safe in small amounts. Good source of protein and iron. Remove from shell, never serve raw.",
+      symptoms: "GI upset from raw clams" },
+    { name: "tea", display: "Tea", pets: ["dog", "cat"], severity: "moderate",
+      description: "Contains caffeine which is toxic to pets. Herbal teas may also contain harmful herbs.",
+      symptoms: "Restlessness, rapid breathing, heart palpitations, vomiting" },
+    { name: "soda", display: "Soda / Soft Drinks", pets: ["dog", "cat"], severity: "moderate",
+      description: "Contains caffeine (cola types), high sugar, and artificial sweeteners (potentially xylitol). No nutritional value.",
+      symptoms: "Caffeine toxicity, GI upset, potential xylitol poisoning" },
+    { name: "juice", display: "Fruit Juice", pets: ["dog", "cat"], severity: "low",
+      description: "Too high in sugar with none of the fiber from whole fruit. Grape juice is toxic. Citrus juice can cause GI upset.",
+      symptoms: "GI upset, diarrhea from sugar overload" },
+    { name: "coconut water", display: "Coconut Water", pets: ["dog", "cat"], severity: "low",
+      description: "High in potassium which can be dangerous in large amounts. Small sips occasionally may be okay.",
+      symptoms: "GI upset, elevated potassium levels" },
+    { name: "butter", display: "Butter", pets: ["dog", "cat"], severity: "low",
+      description: "Very high in fat, can trigger pancreatitis. A tiny amount won't cause harm but should be avoided.",
+      symptoms: "Diarrhea, vomiting, pancreatitis from regular or large amounts" },
+    { name: "mayo", display: "Mayonnaise", pets: ["dog", "cat"], severity: "low",
+      description: "Not toxic but very high in fat. Can trigger pancreatitis. No nutritional benefit for pets.",
+      symptoms: "GI upset, pancreatitis from large amounts" },
+    { name: "ketchup", display: "Ketchup", pets: ["dog", "cat"], severity: "low",
+      description: "Contains high sugar, salt, and often onion powder or garlic powder. Not recommended for pets.",
+      symptoms: "Mild GI upset; check label for onion/garlic" },
+    { name: "soy sauce", display: "Soy Sauce", pets: ["dog", "cat"], severity: "moderate",
+      description: "Extremely high in sodium. Even a small amount can cause sodium poisoning in small pets.",
+      symptoms: "Excessive thirst, vomiting, diarrhea, tremors, seizures" },
   ],
   safe: [
     { name: "chicken", display: "Cooked Chicken", pets: ["dog", "cat"], description: "Excellent lean protein source. Remove bones and skin." },
@@ -195,6 +387,40 @@ const INGREDIENT_DB = {
     { name: "cranberry", display: "Cranberries", pets: ["dog", "cat"], description: "Safe in small amounts. May support urinary tract health." },
     { name: "mango", display: "Mango", pets: ["dog"], description: "Rich in vitamins. Remove pit and skin before serving." },
     { name: "pear", display: "Pear", pets: ["dog", "cat"], description: "Good vitamin source. Remove seeds and core." },
+    { name: "pork", display: "Cooked Pork (plain)", pets: ["dog", "cat"], description: "Safe when fully cooked and unseasoned. High in fat, so serve lean cuts in moderation." },
+    { name: "lamb", display: "Cooked Lamb", pets: ["dog", "cat"], description: "Good protein source. Serve plain without bones, fat trimmed." },
+    { name: "duck", display: "Cooked Duck", pets: ["dog", "cat"], description: "Safe when cooked plain. Remove skin (very high fat) and all bones." },
+    { name: "venison", display: "Venison (Deer Meat)", pets: ["dog", "cat"], description: "Lean, novel protein. Great for pets with common protein allergies." },
+    { name: "rabbit", display: "Cooked Rabbit", pets: ["dog", "cat"], description: "Lean protein, excellent for dogs with food sensitivities." },
+    { name: "sardine", display: "Sardines", pets: ["dog", "cat"], description: "Rich in omega-3s and lower in mercury than tuna. Serve plain, canned in water." },
+    { name: "cod", display: "Cooked Cod", pets: ["dog", "cat"], description: "Mild white fish, low in fat, high in protein. Great for sensitive stomachs." },
+    { name: "tilapia", display: "Cooked Tilapia", pets: ["dog", "cat"], description: "Safe, mild white fish. Serve plain, fully cooked, deboned." },
+    { name: "whitefish", display: "Cooked Whitefish", pets: ["dog", "cat"], description: "Easily digestible protein source. Common in quality pet foods." },
+    { name: "cottage cheese", display: "Cottage Cheese", pets: ["dog", "cat"], description: "Lower in lactose than most dairy. Good protein source in small amounts." },
+    { name: "yogurt", display: "Plain Yogurt", pets: ["dog", "cat"], description: "Plain, unsweetened yogurt with live cultures may aid digestion. Avoid flavored or sweetened varieties." },
+    { name: "strawberry", display: "Strawberries", pets: ["dog", "cat"], description: "Rich in antioxidants, vitamin C, and fiber. Great occasional treat." },
+    { name: "raspberry", display: "Raspberries", pets: ["dog", "cat"], description: "Safe in small amounts. Contains trace natural xylitol, so keep portions small." },
+    { name: "blackberry", display: "Blackberries", pets: ["dog", "cat"], description: "Safe and antioxidant-rich. Good occasional treat in small amounts." },
+    { name: "cantaloupe", display: "Cantaloupe", pets: ["dog", "cat"], description: "Safe and hydrating. Remove rind and seeds. High in sugar, so feed in moderation." },
+    { name: "honeydew", display: "Honeydew Melon", pets: ["dog", "cat"], description: "Safe in small amounts. Remove rind and seeds. Good hydrating treat." },
+    { name: "celery", display: "Celery", pets: ["dog", "cat"], description: "Low calorie, good for overweight pets. Cut into small pieces to prevent choking on strings." },
+    { name: "zucchini", display: "Zucchini", pets: ["dog", "cat"], description: "Safe raw or cooked. Very low calorie and good for weight management." },
+    { name: "lettuce", display: "Lettuce", pets: ["dog", "cat"], description: "Safe and very low calorie. Mostly water with minimal nutrition. Good for overweight pets." },
+    { name: "cabbage", display: "Cabbage", pets: ["dog", "cat"], description: "Safe in small amounts, cooked or raw. Can cause gas if fed too much." },
+    { name: "cauliflower", display: "Cauliflower", pets: ["dog", "cat"], description: "Safe in small amounts. Can cause gas. Serve plain, steamed or raw." },
+    { name: "bell pepper", display: "Bell Pepper", pets: ["dog", "cat"], description: "Safe and nutritious. Red bell peppers have the most vitamins. Remove seeds and stem." },
+    { name: "asparagus", display: "Asparagus", pets: ["dog", "cat"], description: "Safe when cooked. Raw asparagus is very tough to digest. No seasoning." },
+    { name: "brussels sprout", display: "Brussels Sprouts", pets: ["dog"], description: "Safe cooked in small amounts. Can cause significant gas. Serve plain." },
+    { name: "kale", display: "Kale", pets: ["dog"], description: "Safe in small amounts. Contains calcium oxalates and isothiocyanates — too much can cause GI upset." },
+    { name: "squash", display: "Squash (Butternut, Acorn)", pets: ["dog", "cat"], description: "Cooked squash is safe and nutritious. Remove seeds and skin. Good fiber source." },
+    { name: "parsley", display: "Parsley", pets: ["dog"], description: "Safe in small amounts and can freshen breath. Avoid spring parsley (toxic to cats in large amounts)." },
+    { name: "turmeric", display: "Turmeric", pets: ["dog"], description: "Safe in small amounts and has anti-inflammatory properties. Often used in holistic pet care." },
+    { name: "quinoa", display: "Quinoa", pets: ["dog", "cat"], description: "Safe, high-protein grain alternative. Rinse well before cooking to remove saponins." },
+    { name: "brown rice", display: "Brown Rice", pets: ["dog", "cat"], description: "More nutritious than white rice. Higher fiber, takes longer to digest." },
+    { name: "barley", display: "Barley", pets: ["dog", "cat"], description: "Safe cooked grain. Good source of fiber and nutrients." },
+    { name: "chicken breast", display: "Chicken Breast (plain)", pets: ["dog", "cat"], description: "Lean, high-quality protein. Boil or bake without seasoning. Remove skin and bones." },
+    { name: "ground beef", display: "Lean Ground Beef", pets: ["dog", "cat"], description: "Cook thoroughly and drain excess fat. Choose lean (90%+) for pets." },
+    { name: "white fish", display: "White Fish", pets: ["dog", "cat"], description: "Mild, easily digestible protein. Great for pets with sensitive stomachs." },
   ],
 };
 
@@ -221,6 +447,44 @@ function analyzeIngredients(text, petType) {
     if (ingredient.name === "artificial color") searchTerms.push("artificial colour", "food coloring", "food colouring", "fd&c", "color added", "colour added");
     if (ingredient.name === "propylene glycol") searchTerms.push("propylene-glycol", "1,2-propanediol");
     if (ingredient.name === "yeast dough") searchTerms.push("raw dough", "unbaked dough");
+    if (ingredient.name === "noodle") searchTerms.push("noodles", "ramen", "udon", "soba", "spaghetti", "linguine", "fettuccine", "lo mein", "chow mein", "vermicelli", "macaroni", "pho");
+    if (ingredient.name === "pasta") searchTerms.push("penne", "rigatoni", "fusilli", "orzo", "lasagna", "ravioli", "tortellini");
+    if (ingredient.name === "potato") searchTerms.push("potatoes", "mashed potato", "baked potato");
+    if (ingredient.name === "french fry") searchTerms.push("french fries", "fries", "fried potato", "fried potatoes", "tater tot", "tater tots", "hash brown");
+    if (ingredient.name === "chip") searchTerms.push("chips", "crisps", "potato chip", "potato chips", "tortilla chip", "tortilla chips");
+    if (ingredient.name === "hot dog") searchTerms.push("hotdog", "hot dogs", "hotdogs", "frankfurter", "wiener");
+    if (ingredient.name === "ice cream") searchTerms.push("icecream", "gelato", "frozen yogurt", "froyo");
+    if (ingredient.name === "candy") searchTerms.push("candies", "sweets", "gummy", "gummies", "gummy bear", "lollipop", "taffy", "caramel");
+    if (ingredient.name === "cookie") searchTerms.push("cookies", "biscuit", "biscuits");
+    if (ingredient.name === "donut") searchTerms.push("donuts", "doughnut", "doughnuts");
+    if (ingredient.name === "pizza") searchTerms.push("pizzas");
+    if (ingredient.name === "taco") searchTerms.push("tacos", "burrito", "burritos", "quesadilla");
+    if (ingredient.name === "bread") searchTerms.push("breads", "baguette", "sourdough", "brioche", "croissant", "roll", "bun");
+    if (ingredient.name === "cake") searchTerms.push("cakes", "cupcake", "cupcakes", "muffin", "muffins", "brownie", "brownies");
+    if (ingredient.name === "garlic bread") searchTerms.push("garlic toast", "garlic knot", "garlic knots");
+    if (ingredient.name === "bacon") searchTerms.push("bacons", "bacon bit", "bacon bits");
+    if (ingredient.name === "sausage") searchTerms.push("sausages", "bratwurst", "kielbasa", "chorizo", "bologna");
+    if (ingredient.name === "jerky") searchTerms.push("beef jerky", "turkey jerky", "dried meat");
+    if (ingredient.name === "ham") searchTerms.push("prosciutto", "deli meat", "lunch meat", "cold cut", "cold cuts");
+    if (ingredient.name === "wild mushroom") searchTerms.push("wild mushrooms", "toadstool");
+    if (ingredient.name === "bell pepper") searchTerms.push("bell peppers", "sweet pepper", "capsicum");
+    if (ingredient.name === "green bean") searchTerms.push("green beans", "string bean", "string beans", "snap bean");
+    if (ingredient.name === "sweet potato") searchTerms.push("sweet potatoes", "yam", "yams");
+    if (ingredient.name === "brussels sprout") searchTerms.push("brussels sprouts", "brussel sprout", "brussel sprouts");
+    if (ingredient.name === "peanut butter") searchTerms.push("pb");
+    if (ingredient.name === "ground beef") searchTerms.push("minced beef", "hamburger", "burger meat", "mince");
+    if (ingredient.name === "chicken breast") searchTerms.push("chicken tender", "chicken tenders", "chicken strip", "chicken strips");
+    if (ingredient.name === "cottage cheese") searchTerms.push("ricotta");
+    if (ingredient.name === "yogurt") searchTerms.push("yoghurt", "greek yogurt");
+    if (ingredient.name === "soy sauce") searchTerms.push("shoyu", "tamari");
+    if (ingredient.name === "mayo") searchTerms.push("mayonnaise");
+    if (ingredient.name === "hop") searchTerms.push("hops");
+    if (ingredient.name === "marijuana") searchTerms.push("weed", "pot", "thc", "edible", "edibles");
+    if (ingredient.name === "tobacco") searchTerms.push("cigarette", "cigarettes", "nicotine", "cigar");
+    if (ingredient.name === "soda") searchTerms.push("cola", "coke", "pepsi", "soft drink", "pop");
+    if (ingredient.name === "tea") searchTerms.push("green tea", "black tea", "iced tea");
+    if (ingredient.name === "coconut water") searchTerms.push("coconut milk");
+    if (ingredient.name === "star fruit") searchTerms.push("starfruit", "carambola");
     for (const term of searchTerms) {
       const regex = new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
       if (regex.test(lowerText)) { found.push(ingredient); matched.add(ingredient.name); break; }
@@ -277,10 +541,10 @@ export default function Home() {
       <Head>
         <meta name="google-site-verification" content="WNU3XQOEJ7qSnToDnIesJHmelwYfWrMKoiOV_KxiHbU" />
         <title>CanMyPetEat — Free Pet Food Safety Checker for Dogs & Cats</title>
-        <meta name="description" content="Instantly check if food ingredients are safe for your dog or cat. Free tool with 80+ ingredients database. No sign-up required." />
+        <meta name="description" content="Instantly check if food ingredients are safe for your dog or cat. Free tool with 200+ ingredients database. No sign-up required." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="og:title" content="CanMyPetEat — Is This Food Safe for My Pet?" />
-        <meta property="og:description" content="Paste any ingredient list and instantly know if it's safe for your dog or cat. Free, no sign-up, 80+ ingredients checked." />
+        <meta property="og:description" content="Paste any ingredient list and instantly know if it's safe for your dog or cat. Free, no sign-up, 200+ ingredients checked." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://canmypeteat.app" />
         <meta name="twitter:card" content="summary_large_image" />
@@ -309,7 +573,7 @@ export default function Home() {
             </button>
             {showInfo && (
               <div style={{ marginTop:"12px", padding:"16px 20px", borderRadius:"12px", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.08)", textAlign:"left", fontSize:"14px", color:"#94a3b8", lineHeight:1.7 }}>
-                <p style={{ margin:"0 0 8px 0" }}><strong style={{ color:"#e2e8f0" }}>Paste or type ingredients</strong> from any pet food label, human food, or treat. We check them against a veterinary-sourced database of 80+ known toxic, risky, and safe ingredients.</p>
+                <p style={{ margin:"0 0 8px 0" }}><strong style={{ color:"#e2e8f0" }}>Paste or type ingredients</strong> from any pet food label, human food, or treat. We check them against a veterinary-sourced database of 200+ known toxic, risky, and safe ingredients.</p>
                 <p style={{ margin:0, fontSize:"13px", color:"#64748b" }}>⚡ No sign-up · 100% free · No data collected · Works offline after first load</p>
               </div>
             )}
@@ -415,7 +679,7 @@ export default function Home() {
           {!results && (
             <footer style={{ textAlign:"center", padding:"40px 0 60px", color:"#334155", fontSize:"13px" }}>
               <div style={{ marginBottom:"16px", display:"flex", justifyContent:"center", gap:"24px", flexWrap:"wrap" }}>
-                {["80+ ingredients", "Dogs & Cats", "No sign-up", "100% free"].map((f) => (
+                {["200+ ingredients", "Dogs & Cats", "No sign-up", "100% free"].map((f) => (
                   <span key={f} style={{ display:"flex", alignItems:"center", gap:"6px" }}><span style={{ color:"#38bdf8" }}>✦</span> {f}</span>
                 ))}
               </div>
