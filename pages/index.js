@@ -485,9 +485,123 @@ function analyzeIngredients(text, petType) {
     if (ingredient.name === "tea") searchTerms.push("green tea", "black tea", "iced tea");
     if (ingredient.name === "coconut water") searchTerms.push("coconut milk");
     if (ingredient.name === "star fruit") searchTerms.push("starfruit", "carambola");
+    // Chinese / 中文 search terms
+    const cnMap = {
+      "onion": ["洋蔥","洋葱"], "garlic": ["大蒜","蒜頭","蒜头","蒜"], "leek": ["韭菜","韭蔥","韭葱"],
+      "chive": ["細香蔥","韭黃","韭黄"], "shallot": ["紅蔥頭","红葱头","珠蔥"], "scallion": ["蔥","葱","青蔥","青葱"],
+      "chocolate": ["巧克力","朱古力"], "cocoa": ["可可","可可粉"], "theobromine": ["可可鹼","可可碱"],
+      "caffeine": ["咖啡因"], "coffee": ["咖啡","咖啡豆"],
+      "xylitol": ["木糖醇"], "birch sugar": ["樺糖","桦糖"],
+      "grape": ["葡萄"], "raisin": ["葡萄乾","葡萄干"], "sultana": ["無核葡萄乾","无核葡萄干"], "currant": ["醋栗","黑加侖"],
+      "macadamia": ["夏威夷豆","澳洲堅果","澳洲坚果","夏威夷果"],
+      "alcohol": ["酒","酒精"], "ethanol": ["乙醇"], "beer": ["啤酒"], "wine": ["葡萄酒","紅酒","红酒","白酒"],
+      "yeast dough": ["生麵團","生面团","發酵麵團"], "nutmeg": ["肉豆蔻","豆蔻"],
+      "hop": ["啤酒花"], "marijuana": ["大麻","大麻草"], "cannabis": ["大麻","THC"],
+      "tobacco": ["菸草","烟草","香菸","香烟"], "star fruit": ["楊桃","杨桃"],
+      "wild mushroom": ["野菇","野蘑菇","毒蘑菇"], "persimmon": ["柿子"],
+      "avocado": ["酪梨","牛油果","鱷梨","鳄梨"], "salt": ["鹽","盐","食鹽","食盐"],
+      "dairy": ["乳製品","乳制品","奶製品"], "milk": ["牛奶","鮮奶","鲜奶","奶"],
+      "cheese": ["起司","芝士","乳酪","奶酪"], "citrus": ["柑橘","柑橘類"],
+      "lemon": ["檸檬","柠檬"], "lime": ["萊姆","青檸","青柠"],
+      "raw egg": ["生蛋","生雞蛋"], "raw meat": ["生肉"], "raw fish": ["生魚","生鱼","生魚片","刺身"],
+      "bone": ["骨頭","骨头","雞骨","鸡骨"], "cherry": ["櫻桃","樱桃"],
+      "coconut": ["椰子","椰肉"], "corn": ["玉米"], "wheat": ["小麥","小麦","麵粉","面粉"],
+      "soy": ["大豆","黃豆","黄豆","豆漿","豆浆"],
+      "bacon": ["培根","煙肉","烟肉"], "ham": ["火腿"], "sausage": ["香腸","香肠","臘腸","腊肠"],
+      "hot dog": ["熱狗","热狗"], "pepperoni": ["義式臘腸","意式腊肠"], "salami": ["薩拉米","莎樂美"],
+      "jerky": ["肉乾","肉干","牛肉乾","牛肉干"], "liver": ["肝","肝臟","肝脏","雞肝","鸡肝"],
+      "pizza": ["披薩","披萨","比薩"], "french fry": ["薯條","薯条","炸薯條"],
+      "chip": ["洋芋片","薯片","餅乾","饼干"], "popcorn": ["爆米花"],
+      "bread": ["麵包","面包","吐司"], "toast": ["吐司","烤麵包","烤面包","土司"],
+      "noodle": ["麵","面","麵條","面条","泡麵","泡面","拉麵","拉面","烏龍麵","乌龙面","蕎麥麵","荞麦面","意大利麵","意大利面","米粉","河粉","冬粉","粉絲","粉丝"],
+      "pasta": ["義大利麵","意大利面","通心粉","筆管麵","千層麵"],
+      "potato": ["馬鈴薯","马铃薯","土豆","薯仔"], "tomato": ["番茄","西紅柿","西红柿"],
+      "garlic bread": ["蒜味麵包","蒜味面包","大蒜麵包"],
+      "ice cream": ["冰淇淋","雪糕","冰棒","霜淇淋"],
+      "candy": ["糖果","軟糖","软糖","糖"], "cookie": ["餅乾","饼干","曲奇"],
+      "cake": ["蛋糕","杯子蛋糕","馬芬","布朗尼"], "donut": ["甜甜圈","冬甩"],
+      "cinnamon": ["肉桂","桂皮"], "ginger": ["薑","姜","生薑","生姜"],
+      "honey": ["蜂蜜","蜜糖"], "mustard": ["芥末","黃芥末","黄芥末","芥菜"],
+      "pepper": ["胡椒","黑胡椒","辣椒"], "jalapeno": ["墨西哥辣椒","哈拉佩紐"],
+      "almond": ["杏仁","杏仁果"], "walnut": ["核桃","胡桃"],
+      "pistachio": ["開心果","开心果"], "cashew": ["腰果"],
+      "pecan": ["碧根果","美國山核桃","山核桃"],
+      "pineapple": ["鳳梨","凤梨","菠蘿","菠萝"], "orange": ["橘子","柳橙","橙子","柳丁"],
+      "peach": ["桃子","水蜜桃"], "plum": ["李子","梅子"],
+      "kiwi": ["奇異果","奇异果","獼猴桃","猕猴桃"], "papaya": ["木瓜"],
+      "fig": ["無花果","无花果"], "pomegranate": ["石榴"],
+      "taco": ["塔可","墨西哥捲餅","墨西哥卷饼"],
+      "crab": ["螃蟹","蟹","蟹肉"], "lobster": ["龍蝦","龙虾"],
+      "squid": ["魷魚","鱿鱼","花枝","小卷","透抽"], "oyster": ["牡蠣","牡蛎","生蠔","生蚝"],
+      "clam": ["蛤蜊","蛤","文蛤","海瓜子"],
+      "tea": ["茶","綠茶","绿茶","紅茶","红茶","烏龍茶","乌龙茶"],
+      "soda": ["汽水","可樂","可乐"], "juice": ["果汁"],
+      "coconut water": ["椰子水","椰奶"],
+      "butter": ["奶油","牛油","黃油","黄油"], "mayo": ["美乃滋","蛋黃醬","蛋黄酱"],
+      "ketchup": ["番茄醬","番茄酱"], "soy sauce": ["醬油","酱油","豉油"],
+      "chicken": ["雞肉","鸡肉","雞","鸡"], "turkey": ["火雞","火鸡","火雞肉"],
+      "beef": ["牛肉","牛"], "salmon": ["鮭魚","鲑鱼","三文魚","三文鱼"],
+      "tuna": ["鮪魚","鲔鱼","金槍魚","金枪鱼","吞拿魚"],
+      "shrimp": ["蝦","虾","蝦子","虾子","蝦仁","虾仁"],
+      "carrot": ["胡蘿蔔","胡萝卜","紅蘿蔔","红萝卜"],
+      "green bean": ["四季豆","豆角","綠豆角"],
+      "pumpkin": ["南瓜"], "sweet potato": ["地瓜","番薯","甘薯"],
+      "blueberry": ["藍莓","蓝莓"], "watermelon": ["西瓜"],
+      "apple": ["蘋果","苹果"], "banana": ["香蕉"],
+      "rice": ["白飯","白饭","米飯","米饭","白米","米"],
+      "oatmeal": ["燕麥","燕麦","麥片","麦片"],
+      "peanut butter": ["花生醬","花生酱"],
+      "egg": ["蛋","雞蛋","鸡蛋","鴨蛋","鹌鹑蛋"],
+      "cucumber": ["小黃瓜","小黄瓜","黃瓜","黄瓜"],
+      "broccoli": ["花椰菜","西蘭花","西兰花","綠花菜"],
+      "spinach": ["菠菜","菠薐菜"],
+      "pea": ["豌豆","碗豆","青豆"],
+      "cranberry": ["蔓越莓","小紅莓"],
+      "mango": ["芒果","檬果"],
+      "pear": ["梨子","梨","水梨"],
+      "pork": ["豬肉","猪肉","豬","猪"], "lamb": ["羊肉","小羊肉"],
+      "duck": ["鴨肉","鸭肉","鴨","鸭"], "venison": ["鹿肉"],
+      "rabbit": ["兔肉","兔"],
+      "sardine": ["沙丁魚","沙丁鱼"], "cod": ["鱈魚","鳕鱼"],
+      "tilapia": ["吳郭魚","吴郭鱼","羅非魚","罗非鱼","台灣鯛"],
+      "cottage cheese": ["茅屋起司","卡達起司"],
+      "yogurt": ["優格","优格","優酪乳","酸奶"],
+      "strawberry": ["草莓"], "raspberry": ["覆盆子","覆盆莓"],
+      "blackberry": ["黑莓"], "cantaloupe": ["哈密瓜","香瓜"],
+      "honeydew": ["蜜瓜","白蘭瓜"],
+      "celery": ["芹菜","西洋芹"], "zucchini": ["櫛瓜","栉瓜","西葫蘆","西葫芦"],
+      "lettuce": ["生菜","萵苣","莴苣","美生菜"],
+      "cabbage": ["高麗菜","高丽菜","包心菜","捲心菜","圓白菜"],
+      "cauliflower": ["白花椰菜","花菜","菜花"],
+      "bell pepper": ["甜椒","彩椒","青椒"],
+      "asparagus": ["蘆筍","芦笋"],
+      "brussels sprout": ["球芽甘藍","抱子甘蓝"],
+      "kale": ["羽衣甘藍","羽衣甘蓝"],
+      "squash": ["南瓜","冬瓜","栗子南瓜"],
+      "parsley": ["巴西里","荷蘭芹","洋香菜","欧芹"],
+      "turmeric": ["薑黃","姜黄"],
+      "quinoa": ["藜麥","藜麦"],
+      "brown rice": ["糙米","玄米"],
+      "barley": ["大麥","大麦"],
+      "chicken breast": ["雞胸肉","鸡胸肉"],
+      "ground beef": ["牛絞肉","牛绞肉","碎牛肉","漢堡肉"],
+      "white fish": ["白肉魚","白肉鱼"],
+      "ethoxyquin": ["乙氧基喹"], "bha": ["丁基羥基茴香醚"],
+      "bht": ["二丁基羥基甲苯"], "carrageenan": ["鹿角菜膠","卡拉膠"],
+      "sodium nitrite": ["亞硝酸鈉","亚硝酸钠"],
+      "propylene glycol": ["丙二醇"],
+      "artificial color": ["人工色素","食用色素"],
+    };
+    const cnTerms = cnMap[ingredient.name];
     for (const term of searchTerms) {
       const regex = new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
       if (regex.test(lowerText)) { found.push(ingredient); matched.add(ingredient.name); break; }
+    }
+    // Chinese matching (no word boundaries needed for CJK)
+    if (!matched.has(ingredient.name) && cnTerms) {
+      for (const cn of cnTerms) {
+        if (lowerText.includes(cn)) { found.push(ingredient); matched.add(ingredient.name); break; }
+      }
     }
   }
   const order = { toxic: 0, caution: 1, safe: 2 };
@@ -593,7 +707,7 @@ export default function Home() {
           <div style={{ borderRadius:"18px", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.08)", padding:"4px", marginBottom:"16px" }}>
             <textarea ref={inputRef} value={inputText} onChange={(e) => setInputText(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleAnalyze(); } }}
-              placeholder={"Paste ingredients here...\n\nExample: chicken, corn, wheat gluten, garlic powder, BHA, salt, natural flavors"}
+              placeholder={"Paste ingredients here...\n\nExample: chicken, corn, wheat gluten, garlic powder, BHA, salt, natural flavors\n\n也可以輸入中文：巧克力、葡萄、洋蔥、雞肉"}
               style={{ width:"100%", minHeight:"120px", padding:"16px", background:"transparent", border:"none", outline:"none", color:"#e2e8f0", fontSize:"15px", lineHeight:1.7, fontFamily:"'DM Sans', sans-serif", resize:"vertical", boxSizing:"border-box" }} />
             <div style={{ display:"flex", gap:"8px", padding:"8px 12px" }}>
               <button onClick={handleAnalyze} disabled={!inputText.trim() || isAnalyzing}
