@@ -686,6 +686,8 @@ export default function Home() {
         <meta property="og:url" content="https://canmypeteat.app" />
         <meta name="twitter:card" content="summary_large_image" />
         <link rel="canonical" href="https://canmypeteat.app" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-6NQKMZS5NH"></script>
+        <script dangerouslySetInnerHTML={{__html:`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-6NQKMZS5NH');`}} />
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet" />
       </Head>
 
