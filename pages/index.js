@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import Head from "next/head";
+import CN from "../lib/cn";
 
 // ============================================================
 // CanMyPetEat - Pet Food Ingredient Safety Checker
@@ -421,6 +422,11 @@ const INGREDIENT_DB = {
     { name: "chicken breast", display: "Chicken Breast (plain)", pets: ["dog", "cat"], description: "Lean, high-quality protein. Boil or bake without seasoning. Remove skin and bones." },
     { name: "ground beef", display: "Lean Ground Beef", pets: ["dog", "cat"], description: "Cook thoroughly and drain excess fat. Choose lean (90%+) for pets." },
     { name: "white fish", display: "White Fish", pets: ["dog", "cat"], description: "Mild, easily digestible protein. Great for pets with sensitive stomachs." },
+    { name: "melon", display: "Melon", pets: ["dog", "cat"], description: "Safe in small amounts. Remove rind and seeds. Hydrating treat but high in sugar." },
+    { name: "coconut flesh", display: "Coconut Flesh", pets: ["dog", "cat"], description: "Small amounts safe. High in fat so feed sparingly." },
+    { name: "seaweed", display: "Plain Seaweed / Nori", pets: ["dog", "cat"], description: "Unseasoned nori is safe and nutritious. Avoid seasoned/salted varieties." },
+    { name: "edamame", display: "Edamame (plain)", pets: ["dog"], description: "Plain, unsalted edamame is safe. Good protein source. Remove from pod for small dogs." },
+    { name: "tofu", display: "Tofu (plain)", pets: ["dog", "cat"], description: "Plain tofu in small amounts is safe. Good protein for dogs with meat allergies." },
   ],
 };
 
@@ -485,6 +491,11 @@ function analyzeIngredients(text, petType) {
     if (ingredient.name === "tea") searchTerms.push("green tea", "black tea", "iced tea");
     if (ingredient.name === "coconut water") searchTerms.push("coconut milk");
     if (ingredient.name === "star fruit") searchTerms.push("starfruit", "carambola");
+    if (ingredient.name === "melon") searchTerms.push("melons", "honeydew melon", "galia melon", "rock melon", "canary melon");
+    if (ingredient.name === "coconut flesh") searchTerms.push("coconut meat", "fresh coconut");
+    if (ingredient.name === "seaweed") searchTerms.push("nori", "kelp", "kombu", "wakame");
+    if (ingredient.name === "edamame") searchTerms.push("soybean", "soybeans", "green soybean");
+    if (ingredient.name === "tofu") searchTerms.push("bean curd", "soy curd");
     // Chinese / 中文 search terms
     const cnMap = {
       "onion": ["洋蔥","洋葱"], "garlic": ["大蒜","蒜頭","蒜头","蒜"], "leek": ["韭菜","韭蔥","韭葱"],
@@ -591,6 +602,11 @@ function analyzeIngredients(text, petType) {
       "sodium nitrite": ["亞硝酸鈉","亚硝酸钠"],
       "propylene glycol": ["丙二醇"],
       "artificial color": ["人工色素","食用色素"],
+      "melon": ["甜瓜","蜜瓜","哈密瓜","香瓜","美濃瓜"],
+      "coconut flesh": ["椰肉","新鮮椰子"],
+      "seaweed": ["海苔","海帶","昆布","裙帶菜","紫菜","海藻"],
+      "edamame": ["毛豆","枝豆"],
+      "tofu": ["豆腐","豆干","豆乾","板豆腐","嫩豆腐"],
     };
     const cnTerms = cnMap[ingredient.name];
     for (const term of searchTerms) {
@@ -620,10 +636,15 @@ function calculateScore(results) {
 }
 
 function getScoreColor(s) { return { A:"#22c55e", B:"#84cc16", C:"#eab308", D:"#f97316", F:"#ef4444" }[s] || "#6b7280"; }
-function getScoreLabel(s) { return { A:"Excellent — All clear!", B:"Good — Minor concerns", C:"Fair — Several concerns", D:"Poor — Risky ingredients", F:"Dangerous — Toxic ingredients found!" }[s] || ""; }
-function getCategoryStyle(c) {
+function getScoreLabel(s, isCn) {
+  if (isCn) return { A:"優秀 — 全部安全！", B:"良好 — 有小問題", C:"一般 — 有些疑慮", D:"差 — 有風險成分", F:"危險 — 發現有毒成分！" }[s] || "";
+  return { A:"Excellent — All clear!", B:"Good — Minor concerns", C:"Fair — Several concerns", D:"Poor — Risky ingredients", F:"Dangerous — Toxic ingredients found!" }[s] || "";
+}
+function getCategoryStyle(c, isCn) {
+  if (isCn) return { toxic: { icon:"🚫", label:"危險" }, caution: { icon:"⚠️", label:"注意" }, safe: { icon:"✅", label:"安全" } }[c] || { icon:"❓", label:"未知" };
   return { toxic: { icon:"🚫", label:"DANGEROUS" }, caution: { icon:"⚠️", label:"CAUTION" }, safe: { icon:"✅", label:"SAFE" } }[c] || { icon:"❓", label:"UNKNOWN" };
 }
+function hasChinese(text) { return /[\u4e00-\u9fff]/.test(text); }
 
 export default function Home() {
   const [petType, setPetType] = useState("dog");
@@ -632,6 +653,7 @@ export default function Home() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [activeResult, setActiveResult] = useState(null);
+  const [isCn, setIsCn] = useState(false);
   const inputRef = useRef(null);
   const resultsRef = useRef(null);
 
@@ -639,6 +661,7 @@ export default function Home() {
     if (!inputText.trim()) return;
     setIsAnalyzing(true);
     setActiveResult(null);
+    setIsCn(hasChinese(inputText));
     setTimeout(() => {
       const found = analyzeIngredients(inputText, petType);
       setResults(found);
@@ -737,19 +760,23 @@ export default function Home() {
               {score && (
                 <div style={{ textAlign:"center", marginBottom:"24px", padding:"28px 24px", borderRadius:"20px", background:`linear-gradient(135deg, ${getScoreColor(score)}11 0%, ${getScoreColor(score)}05 100%)`, border:`1px solid ${getScoreColor(score)}33` }}>
                   <div style={{ display:"inline-flex", alignItems:"center", justifyContent:"center", width:"72px", height:"72px", borderRadius:"18px", background:`${getScoreColor(score)}20`, border:`2px solid ${getScoreColor(score)}55`, fontSize:"36px", fontWeight:700, color:getScoreColor(score), fontFamily:"'Fraunces', Georgia, serif", marginBottom:"12px" }}>{score}</div>
-                  <div style={{ fontSize:"16px", fontWeight:600, color:getScoreColor(score), marginBottom:"4px" }}>{getScoreLabel(score)}</div>
-                  <div style={{ fontSize:"13px", color:"#64748b" }}>{results.filter(r => r.category === "toxic").length} dangerous · {results.filter(r => r.category === "caution").length} caution · {results.filter(r => r.category === "safe").length} safe</div>
+                  <div style={{ fontSize:"16px", fontWeight:600, color:getScoreColor(score), marginBottom:"4px" }}>{getScoreLabel(score, isCn)}</div>
+                  <div style={{ fontSize:"13px", color:"#64748b" }}>{results.filter(r => r.category === "toxic").length} {isCn?"危險":"dangerous"} · {results.filter(r => r.category === "caution").length} {isCn?"注意":"caution"} · {results.filter(r => r.category === "safe").length} {isCn?"安全":"safe"}</div>
                 </div>
               )}
               {results.length === 0 ? (
                 <div style={{ textAlign:"center", padding:"32px 24px", borderRadius:"16px", background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.08)" }}>
                   <div style={{ fontSize:"40px", marginBottom:"12px" }}>🤔</div>
-                  <p style={{ color:"#94a3b8", margin:0, fontSize:"15px", lineHeight:1.6 }}>No recognized ingredients found. Try pasting a complete ingredient list from a pet food label, or type individual food names.</p>
+                  <p style={{ color:"#94a3b8", margin:0, fontSize:"15px", lineHeight:1.6 }}>{isCn ? "未找到已知的食材。請嘗試輸入完整的寵物食品成分表，或輸入個別食物名稱。" : "No recognized ingredients found. Try pasting a complete ingredient list from a pet food label, or type individual food names."}</p>
                 </div>
               ) : (
                 <div style={{ display:"flex", flexDirection:"column", gap:"10px" }}>
                   {results.map((item, idx) => {
-                    const sty = getCategoryStyle(item.category);
+                    const sty = getCategoryStyle(item.category, isCn);
+                    const cn = CN[item.name];
+                    const displayName = isCn && cn ? `${cn.d}（${item.display}）` : item.display;
+                    const desc = isCn && cn && cn.desc ? cn.desc : item.description;
+                    const symp = isCn && cn && cn.sym ? cn.sym : item.symptoms;
                     const isExp = activeResult === idx;
                     return (
                       <button key={idx} onClick={() => setActiveResult(isExp ? null : idx)}
@@ -758,23 +785,25 @@ export default function Home() {
                           <span style={{ fontSize:"20px", flexShrink:0 }}>{sty.icon}</span>
                           <div style={{ flex:1 }}>
                             <div style={{ display:"flex", alignItems:"center", gap:"8px", marginBottom:"2px", flexWrap:"wrap" }}>
-                              <span style={{ fontWeight:600, fontSize:"15px" }}>{item.display}</span>
+                              <span style={{ fontWeight:600, fontSize:"15px" }}>{displayName}</span>
                               <span style={{ fontSize:"10px", fontWeight:700, letterSpacing:"0.5px", padding:"2px 8px", borderRadius:"100px", background: item.category==="toxic" ? "rgba(239,68,68,0.15)" : item.category==="caution" ? "rgba(234,179,8,0.15)" : "rgba(34,197,94,0.15)", color: item.category==="toxic" ? "#fca5a5" : item.category==="caution" ? "#fcd34d" : "#86efac" }}>{sty.label}</span>
                               {item.severity === "high" && <span style={{ fontSize:"10px", fontWeight:700, padding:"2px 6px", borderRadius:"100px", background:"rgba(239,68,68,0.2)", color:"#fca5a5" }}>HIGH RISK</span>}
                             </div>
                             <div style={{ fontSize:"13px", color:"#64748b" }}>
-                              {item.category !== "safe" ? `Affects: ${item.pets.map(p => p==="dog" ? "🐕 Dogs" : "🐈 Cats").join(" & ")}` : `Safe for: ${item.pets.map(p => p==="dog" ? "🐕 Dogs" : "🐈 Cats").join(" & ")}`}
+                              {item.category !== "safe"
+                                ? (isCn ? `影響：${item.pets.map(p => p==="dog" ? "🐕 狗" : "🐈 貓").join(" & ")}` : `Affects: ${item.pets.map(p => p==="dog" ? "🐕 Dogs" : "🐈 Cats").join(" & ")}`)
+                                : (isCn ? `安全：${item.pets.map(p => p==="dog" ? "🐕 狗" : "🐈 貓").join(" & ")}` : `Safe for: ${item.pets.map(p => p==="dog" ? "🐕 Dogs" : "🐈 Cats").join(" & ")}`)}
                             </div>
                           </div>
                           <span style={{ fontSize:"18px", color:"#475569", transform: isExp ? "rotate(180deg)" : "rotate(0deg)", transition:"transform 0.2s ease" }}>▾</span>
                         </div>
                         {isExp && (
                           <div style={{ marginTop:"14px", paddingTop:"14px", borderTop:"1px solid rgba(255,255,255,0.06)" }}>
-                            <p style={{ margin:"0 0 10px 0", fontSize:"14px", lineHeight:1.7, color:"#cbd5e1" }}>{item.description}</p>
-                            {item.symptoms && (
+                            <p style={{ margin:"0 0 10px 0", fontSize:"14px", lineHeight:1.7, color:"#cbd5e1" }}>{desc}</p>
+                            {symp && (
                               <div style={{ padding:"10px 14px", borderRadius:"10px", background:"rgba(239,68,68,0.06)", border:"1px solid rgba(239,68,68,0.1)" }}>
-                                <div style={{ fontSize:"11px", fontWeight:700, color:"#f87171", letterSpacing:"0.5px", marginBottom:"4px" }}>SYMPTOMS TO WATCH FOR</div>
-                                <div style={{ fontSize:"13px", color:"#fca5a5", lineHeight:1.6 }}>{item.symptoms}</div>
+                                <div style={{ fontSize:"11px", fontWeight:700, color:"#f87171", letterSpacing:"0.5px", marginBottom:"4px" }}>{isCn ? "注意症狀" : "SYMPTOMS TO WATCH FOR"}</div>
+                                <div style={{ fontSize:"13px", color:"#fca5a5", lineHeight:1.6 }}>{symp}</div>
                               </div>
                             )}
                           </div>
