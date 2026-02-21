@@ -427,7 +427,80 @@ const INGREDIENT_DB = {
     { name: "seaweed", display: "Plain Seaweed / Nori", pets: ["dog", "cat"], description: "Unseasoned nori is safe and nutritious. Avoid seasoned/salted varieties." },
     { name: "edamame", display: "Edamame (plain)", pets: ["dog"], description: "Plain, unsalted edamame is safe. Good protein source. Remove from pod for small dogs." },
     { name: "tofu", display: "Tofu (plain)", pets: ["dog", "cat"], description: "Plain tofu in small amounts is safe. Good protein for dogs with meat allergies." },
+    { name: "guava", display: "Guava", pets: ["dog", "cat"], description: "Safe in small amounts. Rich in vitamin C and fiber. Remove seeds (may cause constipation)." },
+    { name: "dragon fruit", display: "Dragon Fruit (Pitaya)", pets: ["dog", "cat"], description: "Safe in small amounts. Low calorie, high in fiber and antioxidants. Remove skin before serving." },
+    { name: "lychee", display: "Lychee (flesh only)", pets: ["dog", "cat"], description: "Flesh is safe in small amounts. ALWAYS remove skin and seed. Seeds contain toxins and are a choking hazard." },
+    { name: "wax apple", display: "Wax Apple", pets: ["dog", "cat"], description: "Safe in small amounts. Low calorie and hydrating. Remove seeds." },
+    { name: "passion fruit", display: "Passion Fruit (flesh only)", pets: ["dog", "cat"], description: "Flesh and juice are safe in small amounts. Seeds are safe in small quantities. Remove rind." },
   ],
+  caution_extra: [],
+};
+
+// Additional caution items
+INGREDIENT_DB.caution.push(
+  { name: "longan", display: "Longan", pets: ["dog", "cat"], severity: "low",
+    description: "Flesh is safe in small amounts but very high in sugar. ALWAYS remove skin and seed — seeds are a choking hazard and contain saponins.",
+    symptoms: "Seed: choking, intestinal blockage. Flesh: GI upset from too much sugar" },
+  { name: "durian", display: "Durian", pets: ["dog", "cat"], severity: "moderate",
+    description: "Flesh in very small amounts is not toxic, but extremely high in fat and sugar. Seeds are toxic. The strong smell often deters pets.",
+    symptoms: "Diarrhea, vomiting, bloating from high fat. Seeds: potential toxicity" },
+  { name: "custard apple", display: "Custard Apple / Sugar Apple", pets: ["dog", "cat"], severity: "moderate",
+    description: "Flesh is okay in tiny amounts. Seeds are TOXIC — contain annonacin which is neurotoxic. Skin is also not safe.",
+    symptoms: "Seeds: neurological damage, vomiting. Flesh in excess: GI upset from high sugar" },
+  { name: "jackfruit", display: "Jackfruit", pets: ["dog", "cat"], severity: "low",
+    description: "Flesh is safe in small amounts. Very high in sugar and fiber. Remove seeds (contain trypsin inhibitors) and rind.",
+    symptoms: "GI upset, diarrhea from excess fiber or sugar" },
+  { name: "taro", display: "Taro (cooked only)", pets: ["dog", "cat"], severity: "moderate",
+    description: "MUST be fully cooked. Raw taro contains calcium oxalate crystals that cause severe mouth and throat irritation. Cooked taro in small amounts is safe.",
+    symptoms: "Raw: intense mouth burning, drooling, swelling, difficulty swallowing. Cooked: safe in small amounts" },
+  { name: "bamboo shoot", display: "Bamboo Shoot (cooked)", pets: ["dog", "cat"], severity: "low",
+    description: "Cooked bamboo shoots are safe in small amounts. Raw bamboo shoots contain cyanogenic glycosides. Always cook thoroughly.",
+    symptoms: "Raw: potential cyanide toxicity. Cooked: generally safe" },
+  { name: "stinky tofu", display: "Stinky Tofu", pets: ["dog", "cat"], severity: "moderate",
+    description: "High in sodium and often deep-fried with heavy seasonings. The fermentation process and spices make it unsuitable for pets.",
+    symptoms: "GI upset, excessive thirst from sodium, diarrhea" },
+  { name: "bubble tea", display: "Bubble Tea / Boba", pets: ["dog", "cat"], severity: "moderate",
+    description: "Contains caffeine (tea), extremely high sugar, and tapioca pearls are a choking hazard. Milk-based versions add lactose issues.",
+    symptoms: "Caffeine toxicity, GI upset, choking on boba pearls" },
+  { name: "moon cake", display: "Moon Cake / Mooncake", pets: ["dog", "cat"], severity: "moderate",
+    description: "Extremely high in sugar and fat. Often contains lotus seed paste, egg yolk, and nuts. Some contain xylitol or raisins.",
+    symptoms: "GI upset, pancreatitis from high fat. Check for raisins/xylitol" },
+  { name: "pork floss", display: "Pork Floss (肉鬆)", pets: ["dog", "cat"], severity: "low",
+    description: "High in sodium and often contains sugar and soy sauce. Unseasoned dried meat in small amounts is safer.",
+    symptoms: "Excessive thirst from sodium, GI upset" },
+);
+
+delete INGREDIENT_DB.caution_extra;
+
+// Brand info database
+const BRAND_DB = {
+  "royal canin": { d:"Royal Canin 皇家", type:"cat/dog", rating:"B", desc:"Major pet food brand owned by Mars. Uses corn, wheat, and by-products as fillers in some lines. Higher-end prescription diets are well-formulated. Main concerns: corn/wheat as primary ingredients in some formulas, use of by-product meal, BHA preservative in some products.", descCn:"Mars集團旗下主要寵物食品品牌。部分產品線使用玉米、小麥和副產品作為填充物。高端處方飼料配方良好。主要疑慮：部分配方以玉米/小麥為主要成分、使用副產品粉、部分產品含BHA防腐劑。" },
+  "whiskas": { d:"Whiskas 偉嘉", type:"cat", rating:"C", desc:"Budget cat food brand by Mars. Heavy use of grains, by-products, and artificial colors. Low meat content compared to premium brands. Contains artificial colors (Red 40, Yellow 5) that provide no nutritional value.", descCn:"Mars旗下平價貓糧品牌。大量使用穀物、副產品和人工色素。肉類含量低於高檔品牌。含無營養價值的人工色素（紅色40號、黃色5號）。" },
+  "hills": { d:"Hill's 希爾思", type:"cat/dog", rating:"B+", desc:"Science-based pet food brand. Prescription diets are highly regarded by vets. Regular lines use some fillers. Science Diet line is a solid choice. Main ingredients are generally transparent.", descCn:"以科學為基礎的寵物食品品牌。處方飼料深受獸醫推崇。一般產品線使用部分填充物。Science Diet系列是不錯的選擇。成分通常較透明。" },
+  "purina": { d:"Purina 普瑞納", type:"cat/dog", rating:"B-", desc:"Nestlé-owned brand with wide range from budget to premium. Pro Plan line is decent. Some products contain artificial colors, by-products, and corn gluten meal. Quality varies significantly by product line.", descCn:"雀巢旗下品牌，產品線從平價到高檔都有。Pro Plan系列品質不錯。部分產品含人工色素、副產品和玉米麩質。品質因產品線差異很大。" },
+  "fancy feast": { d:"Fancy Feast", type:"cat", rating:"B-", desc:"Purina's wet cat food brand. Classic pâté line has decent meat content. Some varieties contain by-products and artificial colors. Gravy lovers line is higher in carbs. Overall acceptable for wet food.", descCn:"Purina的濕貓糧品牌。經典慕斯系列肉類含量不錯。部分口味含副產品和人工色素。肉汁系列碳水較高。整體作為濕糧可接受。" },
+  "sheba": { d:"Sheba", type:"cat", rating:"B", desc:"Mars premium wet cat food brand. Generally higher meat content than Whiskas. Some varieties have cleaner ingredient lists. A decent mid-range wet food option.", descCn:"Mars旗下高檔濕貓糧品牌。肉類含量通常高於偉嘉。部分口味成分較乾淨。中檔濕糧不錯的選擇。" },
+  "iams": { d:"IAMS 愛慕思", type:"cat/dog", rating:"B", desc:"Mars-owned brand. Uses real meat as first ingredient in most formulas. Some products contain corn and by-products. ProActive Health line is a reasonable choice for everyday feeding.", descCn:"Mars旗下品牌。大多數配方以真正肉類為第一成分。部分產品含玉米和副產品。ProActive Health系列是日常餵食的合理選擇。" },
+  "blue buffalo": { d:"Blue Buffalo 藍饌", type:"cat/dog", rating:"A-", desc:"Premium brand focusing on natural ingredients. No by-products, corn, wheat, or soy. Uses real meat as first ingredient. LifeSource Bits contain antioxidants. One of the better mainstream options.", descCn:"主打天然成分的高檔品牌。不含副產品、玉米、小麥或大豆。以真正肉類為第一成分。LifeSource Bits含抗氧化物。主流品牌中較好的選擇之一。" },
+  "orijen": { d:"Orijen 渴望", type:"cat/dog", rating:"A", desc:"Ultra-premium biologically appropriate food. Very high meat content (75-85%). Uses fresh and raw animal ingredients. No grains, potatoes, or plant protein concentrates. One of the highest quality commercial pet foods available.", descCn:"超高檔生物學適當飼料。肉類含量極高（75-85%）。使用新鮮和生的動物成分。不含穀物、馬鈴薯或植物蛋白濃縮物。市面上品質最高的商業寵物食品之一。" },
+  "acana": { d:"ACANA 愛肯拿", type:"cat/dog", rating:"A-", desc:"Premium brand by the makers of Orijen. High meat content (50-75%). Uses regionally sourced ingredients. Limited carbohydrate content. Good balance of quality and value.", descCn:"與Orijen同廠的高檔品牌。肉類含量高（50-75%）。使用在地採購的原料。碳水化合物含量低。品質與價值兼具。" },
+  "friskies": { d:"Friskies 喜躍", type:"cat", rating:"C", desc:"Budget Purina cat food. High in grains and by-products. Contains artificial colors and flavors. Low meat content. Acceptable as occasional wet food but not ideal for primary diet.", descCn:"Purina平價貓糧。穀物和副產品含量高。含人工色素和香料。肉類含量低。偶爾作為濕糧可接受但不適合作為主食。" },
+  "meow mix": { d:"Meow Mix", type:"cat", rating:"C", desc:"Budget cat food. First ingredients are often corn and by-products. Contains artificial colors. Low in quality protein. Not recommended as a primary diet.", descCn:"平價貓糧。第一成分通常是玉米和副產品。含人工色素。優質蛋白質含量低。不建議作為主食。" },
+};
+
+const BRAND_ALIASES = {
+  "皇家":"royal canin", "皇家貓糧":"royal canin", "皇家狗糧":"royal canin", "royal canin":"royal canin",
+  "偉嘉":"whiskas", "伟嘉":"whiskas", "whiskas":"whiskas",
+  "希爾思":"hills", "希尔思":"hills", "hills":"hills", "hill's":"hills", "science diet":"hills",
+  "普瑞納":"purina", "普瑞纳":"purina", "purina":"purina", "pro plan":"purina",
+  "fancy feast":"fancy feast", "珍致":"fancy feast",
+  "sheba":"sheba",
+  "愛慕思":"iams", "iams":"iams",
+  "藍饌":"blue buffalo", "蓝馔":"blue buffalo", "blue buffalo":"blue buffalo", "blue":"blue buffalo",
+  "渴望":"orijen", "orijen":"orijen",
+  "愛肯拿":"acana", "acana":"acana",
+  "喜躍":"friskies", "friskies":"friskies",
+  "meow mix":"meow mix",
 };
 
 const ALL_INGREDIENTS = [
@@ -440,6 +513,16 @@ function analyzeIngredients(text, petType) {
   const lowerText = text.toLowerCase();
   const found = [];
   const matched = new Set();
+
+  // Check for brand names first
+  let brandMatch = null;
+  for (const [alias, brandKey] of Object.entries(BRAND_ALIASES)) {
+    if (lowerText.includes(alias.toLowerCase())) {
+      brandMatch = { key: brandKey, ...BRAND_DB[brandKey] };
+      break;
+    }
+  }
+
   for (const ingredient of ALL_INGREDIENTS) {
     if (matched.has(ingredient.name)) continue;
     if (petType !== "both" && !ingredient.pets.includes(petType)) continue;
@@ -496,6 +579,21 @@ function analyzeIngredients(text, petType) {
     if (ingredient.name === "seaweed") searchTerms.push("nori", "kelp", "kombu", "wakame");
     if (ingredient.name === "edamame") searchTerms.push("soybean", "soybeans", "green soybean");
     if (ingredient.name === "tofu") searchTerms.push("bean curd", "soy curd");
+    if (ingredient.name === "guava") searchTerms.push("guavas", "pink guava");
+    if (ingredient.name === "dragon fruit") searchTerms.push("dragonfruit", "pitaya", "pitahaya");
+    if (ingredient.name === "lychee") searchTerms.push("litchi", "lichee", "lichi");
+    if (ingredient.name === "wax apple") searchTerms.push("java apple", "rose apple", "bell fruit");
+    if (ingredient.name === "passion fruit") searchTerms.push("passionfruit", "maracuya", "lilikoi");
+    if (ingredient.name === "longan") searchTerms.push("longans", "dragon eye fruit");
+    if (ingredient.name === "durian") searchTerms.push("durians", "king of fruits");
+    if (ingredient.name === "custard apple") searchTerms.push("sugar apple", "sweetsop", "atemoya", "cherimoya");
+    if (ingredient.name === "jackfruit") searchTerms.push("jack fruit");
+    if (ingredient.name === "taro") searchTerms.push("taro root", "dasheen", "eddoe");
+    if (ingredient.name === "bamboo shoot") searchTerms.push("bamboo shoots", "menma");
+    if (ingredient.name === "stinky tofu") searchTerms.push("fermented tofu", "chou doufu");
+    if (ingredient.name === "bubble tea") searchTerms.push("boba tea", "boba", "milk tea", "tapioca tea", "pearl milk tea");
+    if (ingredient.name === "moon cake") searchTerms.push("mooncake", "mid-autumn cake");
+    if (ingredient.name === "pork floss") searchTerms.push("meat floss", "rousong", "pork sung", "fish floss");
     // Chinese / 中文 search terms
     const cnMap = {
       "onion": ["洋蔥","洋葱"], "garlic": ["大蒜","蒜頭","蒜头","蒜"], "leek": ["韭菜","韭蔥","韭葱"],
@@ -607,6 +705,21 @@ function analyzeIngredients(text, petType) {
       "seaweed": ["海苔","海帶","昆布","裙帶菜","紫菜","海藻"],
       "edamame": ["毛豆","枝豆"],
       "tofu": ["豆腐","豆干","豆乾","板豆腐","嫩豆腐"],
+      "guava": ["芭樂","芭乐","番石榴"],
+      "dragon fruit": ["火龍果","火龙果","紅龍果","白龍果"],
+      "lychee": ["荔枝","荔枝肉","妃子笑"],
+      "wax apple": ["蓮霧","莲雾"],
+      "passion fruit": ["百香果","西番蓮","西番莲"],
+      "longan": ["龍眼","龙眼","桂圓","桂圆"],
+      "durian": ["榴槤","榴莲","榴蓮"],
+      "custard apple": ["釋迦","释迦","番荔枝","鳳梨釋迦"],
+      "jackfruit": ["波羅蜜","波罗蜜","菠蘿蜜"],
+      "taro": ["芋頭","芋头","芋","芋泥"],
+      "bamboo shoot": ["竹筍","竹笋","筍","笋"],
+      "stinky tofu": ["臭豆腐"],
+      "bubble tea": ["珍珠奶茶","波霸奶茶","珍奶","奶茶","手搖飲","手摇饮"],
+      "moon cake": ["月餅","月饼","蛋黃酥","鳳梨酥"],
+      "pork floss": ["肉鬆","肉松","肉絲","魚鬆"],
     };
     const cnTerms = cnMap[ingredient.name];
     for (const term of searchTerms) {
@@ -622,6 +735,7 @@ function analyzeIngredients(text, petType) {
   }
   const order = { toxic: 0, caution: 1, safe: 2 };
   found.sort((a, b) => order[a.category] - order[b.category]);
+  found.brandMatch = brandMatch;
   return found;
 }
 
@@ -759,6 +873,25 @@ export default function Home() {
           {/* Results */}
           {results !== null && (
             <div ref={resultsRef} style={{ paddingBottom:"80px" }}>
+              {/* Brand match card */}
+              {results.brandMatch && (
+                <div style={{ marginBottom:"20px", padding:"20px", borderRadius:"16px", background:"linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(168,85,247,0.06) 100%)", border:"1px solid rgba(56,189,248,0.2)" }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"12px" }}>
+                    <span style={{ fontSize:"24px" }}>🏷️</span>
+                    <span style={{ fontWeight:700, fontSize:"18px", color:"#e0f2fe" }}>{results.brandMatch.d}</span>
+                    <span style={{ fontSize:"12px", fontWeight:700, padding:"3px 10px", borderRadius:"100px",
+                      background: results.brandMatch.rating.startsWith("A") ? "rgba(34,197,94,0.2)" : results.brandMatch.rating.startsWith("B") ? "rgba(234,179,8,0.2)" : "rgba(239,68,68,0.2)",
+                      color: results.brandMatch.rating.startsWith("A") ? "#86efac" : results.brandMatch.rating.startsWith("B") ? "#fcd34d" : "#fca5a5"
+                    }}>{isCn ? "評分" : "Rating"}: {results.brandMatch.rating}</span>
+                  </div>
+                  <p style={{ margin:0, fontSize:"14px", lineHeight:1.7, color:"#cbd5e1" }}>
+                    {isCn ? results.brandMatch.descCn : results.brandMatch.desc}
+                  </p>
+                  <p style={{ margin:"10px 0 0 0", fontSize:"12px", color:"#64748b" }}>
+                    {isCn ? "💡 提示：貼上該飼料的完整成分表，可獲得更詳細的成分分析。" : "💡 Tip: Paste the full ingredient list from the label for a detailed ingredient-by-ingredient analysis."}
+                  </p>
+                </div>
+              )}
               {score && (
                 <div style={{ textAlign:"center", marginBottom:"24px", padding:"28px 24px", borderRadius:"20px", background:`linear-gradient(135deg, ${getScoreColor(score)}11 0%, ${getScoreColor(score)}05 100%)`, border:`1px solid ${getScoreColor(score)}33` }}>
                   <div style={{ display:"inline-flex", alignItems:"center", justifyContent:"center", width:"72px", height:"72px", borderRadius:"18px", background:`${getScoreColor(score)}20`, border:`2px solid ${getScoreColor(score)}55`, fontSize:"36px", fontWeight:700, color:getScoreColor(score), fontFamily:"'Fraunces', Georgia, serif", marginBottom:"12px" }}>{score}</div>
