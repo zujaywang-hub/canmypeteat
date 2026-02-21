@@ -901,8 +901,12 @@ export default function Home() {
               )}
               {results.length === 0 ? (
                 <div style={{ textAlign:"center", padding:"32px 24px", borderRadius:"16px", background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.08)" }}>
-                  <div style={{ fontSize:"40px", marginBottom:"12px" }}>🤔</div>
-                  <p style={{ color:"#94a3b8", margin:0, fontSize:"15px", lineHeight:1.6 }}>{isCn ? "未找到已知的食材。請嘗試輸入完整的寵物食品成分表，或輸入個別食物名稱。" : "No recognized ingredients found. Try pasting a complete ingredient list from a pet food label, or type individual food names."}</p>
+                  <div style={{ fontSize:"40px", marginBottom:"12px" }}>{results.brandMatch ? "📋" : "🤔"}</div>
+                  <p style={{ color:"#94a3b8", margin:0, fontSize:"15px", lineHeight:1.6 }}>{
+                    results.brandMatch
+                      ? (isCn ? "已找到品牌資訊！請貼上該飼料包裝背面的完整成分表，即可獲得逐一成分安全分析和評分。" : "Brand info found! Paste the full ingredient list from the back of the package to get a detailed ingredient-by-ingredient safety analysis and score.")
+                      : (isCn ? "未找到已知的食材。請嘗試輸入完整的寵物食品成分表，或輸入個別食物名稱。" : "No recognized ingredients found. Try pasting a complete ingredient list from a pet food label, or type individual food names.")
+                  }</p>
                 </div>
               ) : (
                 <div style={{ display:"flex", flexDirection:"column", gap:"10px" }}>
