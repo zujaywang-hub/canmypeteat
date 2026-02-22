@@ -777,8 +777,15 @@ export default function Home() {
     setActiveResult(null);
     setIsCn(hasChinese(inputText));
     setTimeout(() => {
-      const found = analyzeIngredients(inputText, petType);
-      setResults(found);
+      try {
+        const found = analyzeIngredients(inputText, petType);
+        setResults(found);
+      } catch (e) {
+        console.error("Analysis error:", e);
+        const empty = [];
+        empty.brandMatch = null;
+        setResults(empty);
+      }
       setIsAnalyzing(false);
       setTimeout(() => { resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }, 100);
     }, 600);
@@ -811,18 +818,23 @@ export default function Home() {
         <div style={{ position:"fixed", inset:0, pointerEvents:"none", opacity:0.03, backgroundImage:`linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`, backgroundSize:"40px 40px" }} />
 
         <div style={{ maxWidth:"520px", margin:"0 auto", padding:"0 20px", position:"relative", zIndex:1 }}>
-          <header style={{ textAlign:"center", paddingTop:"48px", paddingBottom:"12px" }}>
+          <header style={{ textAlign:"center", paddingTop:"48px", paddingBottom:"12px", position:"relative" }}>
             <div style={{ display:"inline-flex", alignItems:"center", gap:"10px", background:"rgba(255,255,255,0.05)", borderRadius:"100px", padding:"6px 16px 6px 8px", marginBottom:"20px", border:"1px solid rgba(255,255,255,0.08)", fontSize:"13px", color:"#94a3b8", letterSpacing:"0.5px" }}>
-              <span style={{ fontSize:"18px" }}>🛡️</span> FREE PET FOOD SAFETY TOOL
+              <span style={{ fontSize:"18px" }}>🛡️</span> {isCn ? "免費寵物食品安全工具" : "FREE PET FOOD SAFETY TOOL"}
+            </div>
+            <div style={{ position:"absolute", top:"16px", right:"0px" }}>
+              <button onClick={() => setIsCn(!isCn)} style={{ background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:"8px", color:"#94a3b8", fontSize:"12px", padding:"6px 12px", cursor:"pointer", fontFamily:"'DM Sans', sans-serif" }}>
+                {isCn ? "EN" : "中文"}
+              </button>
             </div>
             <h1 style={{ fontFamily:"'Fraunces', Georgia, serif", fontSize:"38px", fontWeight:700, lineHeight:1.1, margin:"0 0 12px 0", background:"linear-gradient(135deg, #f1f5f9 0%, #38bdf8 50%, #a78bfa 100%)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text" }}>
               CanMyPetEat
             </h1>
             <p style={{ fontSize:"16px", color:"#94a3b8", lineHeight:1.6, margin:"0 0 8px 0", maxWidth:"360px", marginLeft:"auto", marginRight:"auto" }}>
-              Check if food ingredients are safe for your dog or cat — instantly.
+              {isCn ? "立即檢查食物成分是否對您的狗或貓安全。" : "Check if food ingredients are safe for your dog or cat — instantly."}
             </p>
             <button onClick={() => setShowInfo(!showInfo)} style={{ background:"none", border:"none", color:"#64748b", fontSize:"13px", cursor:"pointer", padding:"4px 8px", textDecoration:"underline", textDecorationStyle:"dotted", textUnderlineOffset:"3px" }}>
-              How does it work?
+              {isCn ? "它是如何運作的？" : "How does it work?"}
             </button>
             {showInfo && (
               <div style={{ marginTop:"12px", padding:"16px 20px", borderRadius:"12px", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.08)", textAlign:"left", fontSize:"14px", color:"#94a3b8", lineHeight:1.7 }}>
@@ -834,7 +846,7 @@ export default function Home() {
 
           {/* Pet type selector */}
           <div style={{ display:"flex", gap:"10px", marginBottom:"20px", marginTop:"24px" }}>
-            {[{ id:"dog", emoji:"🐕", label:"Dog" }, { id:"cat", emoji:"🐈", label:"Cat" }, { id:"both", emoji:"🐾", label:"Both" }].map((pet) => (
+            {[{ id:"dog", emoji:"🐕", label: isCn ? "狗" : "Dog" }, { id:"cat", emoji:"🐈", label: isCn ? "貓" : "Cat" }, { id:"both", emoji:"🐾", label: isCn ? "兩者都" : "Both" }].map((pet) => (
               <button key={pet.id} onClick={() => { setPetType(pet.id); if (results) setResults(analyzeIngredients(inputText, pet.id)); }}
                 style={{ flex:1, padding:"14px 8px", borderRadius:"14px", border: petType===pet.id ? "2px solid #38bdf8" : "2px solid rgba(255,255,255,0.08)", background: petType===pet.id ? "rgba(56,189,248,0.1)" : "rgba(255,255,255,0.03)", color: petType===pet.id ? "#e0f2fe" : "#94a3b8", cursor:"pointer", fontSize:"15px", fontWeight:500, fontFamily:"'DM Sans', sans-serif", transition:"all 0.2s ease", display:"flex", flexDirection:"column", alignItems:"center", gap:"4px" }}>
                 <span style={{ fontSize:"24px" }}>{pet.emoji}</span>{pet.label}
@@ -851,10 +863,10 @@ export default function Home() {
             <div style={{ display:"flex", gap:"8px", padding:"8px 12px" }}>
               <button onClick={handleAnalyze} disabled={!inputText.trim() || isAnalyzing}
                 style={{ flex:1, padding:"14px 24px", borderRadius:"12px", border:"none", fontWeight:600, fontSize:"15px", fontFamily:"'DM Sans', sans-serif", cursor:"pointer", background: inputText.trim() ? "linear-gradient(135deg, #38bdf8 0%, #818cf8 100%)" : "rgba(255,255,255,0.06)", color: inputText.trim() ? "#fff" : "#475569", transition:"all 0.3s ease", opacity: isAnalyzing ? 0.7 : 1, display:"flex", alignItems:"center", justifyContent:"center", gap:"8px" }}>
-                {isAnalyzing ? (<><span style={{ display:"inline-block", width:"16px", height:"16px", border:"2px solid rgba(255,255,255,0.3)", borderTopColor:"#fff", borderRadius:"50%", animation:"spin 0.6s linear infinite" }} />Checking...</>) : (<>🔍 Check Safety</>)}
+                {isAnalyzing ? (<><span style={{ display:"inline-block", width:"16px", height:"16px", border:"2px solid rgba(255,255,255,0.3)", borderTopColor:"#fff", borderRadius:"50%", animation:"spin 0.6s linear infinite" }} />{isCn ? "檢查中..." : "Checking..."}</>) : (<>🔍 {isCn ? "檢查安全" : "Check Safety"}</>)}
               </button>
               {inputText && (
-                <button onClick={handleClear} style={{ padding:"14px 16px", borderRadius:"12px", border:"1px solid rgba(255,255,255,0.08)", background:"rgba(255,255,255,0.03)", color:"#94a3b8", cursor:"pointer", fontSize:"14px", fontFamily:"'DM Sans', sans-serif" }}>Clear</button>
+                <button onClick={handleClear} style={{ padding:"14px 16px", borderRadius:"12px", border:"1px solid rgba(255,255,255,0.08)", background:"rgba(255,255,255,0.03)", color:"#94a3b8", cursor:"pointer", fontSize:"14px", fontFamily:"'DM Sans', sans-serif" }}>{isCn ? "清除" : "Clear"}</button>
               )}
             </div>
           </div>
@@ -962,17 +974,17 @@ export default function Home() {
             <>
             {/* Popular Searches Section */}
             <div style={{ maxWidth:"580px", margin:"0 auto", padding:"40px 20px 0" }}>
-              <h2 style={{ fontSize:"18px", fontWeight:700, color:"#e2e8f0", textAlign:"center", marginBottom:"20px" }}>🔥 Popular Searches</h2>
+              <h2 style={{ fontSize:"18px", fontWeight:700, color:"#e2e8f0", textAlign:"center", marginBottom:"20px" }}>{isCn ? "🔥 熱門搜尋" : "🔥 Popular Searches"}</h2>
               <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"10px" }}>
                 {[
-                  { emoji:"🍫", title:"Chocolate & Dogs", desc:"Theobromine toxicity", href:"/can-dogs-eat/chocolate", color:"#ef4444" },
-                  { emoji:"🍇", title:"Grapes & Dogs", desc:"Kidney failure risk", href:"/can-dogs-eat/grapes", color:"#ef4444" },
-                  { emoji:"🌷", title:"Lilies & Cats", desc:"#1 killer plant", href:"/pet-safety/cat-ate-lily", color:"#ef4444" },
-                  { emoji:"🧅", title:"Onions & Cats", desc:"Destroys red blood cells", href:"/pet-safety/cat-ate-onion", color:"#ef4444" },
-                  { emoji:"🥑", title:"Avocado & Cats", desc:"Persin toxin danger", href:"/can-cats-eat/avocado", color:"#eab308" },
-                  { emoji:"🐟", title:"Tuna & Cats", desc:"Mercury concerns", href:"/can-cats-eat/tuna-canned", color:"#eab308" },
-                  { emoji:"🫐", title:"Blueberries & Dogs", desc:"Antioxidant superfood", href:"/can-dogs-eat/blueberry", color:"#22c55e" },
-                  { emoji:"🍉", title:"Watermelon & Dogs", desc:"Hydrating summer treat", href:"/can-dogs-eat/watermelon", color:"#22c55e" },
+                  { emoji:"🍫", title: isCn ? "巧克力/狗狗" : "Chocolate & Dogs", desc: isCn ? "可可鹼中毒" : "Theobromine toxicity", href:"/can-dogs-eat/chocolate", color:"#ef4444" },
+                  { emoji:"🍇", title: isCn ? "葡萄/狗狗" : "Grapes & Dogs", desc: isCn ? "腎衰竭風險" : "Kidney failure risk", href:"/can-dogs-eat/grapes", color:"#ef4444" },
+                  { emoji:"🌷", title: isCn ? "百合花/貓咪" : "Lilies & Cats", desc: isCn ? "#1 致命植物" : "#1 killer plant", href:"/pet-safety/cat-ate-lily", color:"#ef4444" },
+                  { emoji:"🧅", title: isCn ? "洋蔥/貓咪" : "Onions & Cats", desc: isCn ? "破壞紅血球" : "Destroys red blood cells", href:"/pet-safety/cat-ate-onion", color:"#ef4444" },
+                  { emoji:"🥑", title: isCn ? "酪梨/貓咪" : "Avocado & Cats", desc: isCn ? "波辛毒素" : "Persin toxin danger", href:"/can-cats-eat/avocado", color:"#eab308" },
+                  { emoji:"🐟", title: isCn ? "鮪魚罐頭/貓咪" : "Tuna & Cats", desc: isCn ? "汞含量疑慮" : "Mercury concerns", href:"/can-cats-eat/tuna-canned", color:"#eab308" },
+                  { emoji:"🫐", title: isCn ? "藍莓/狗狗" : "Blueberries & Dogs", desc: isCn ? "抗氧化超級食物" : "Antioxidant superfood", href:"/can-dogs-eat/blueberry", color:"#22c55e" },
+                  { emoji:"🍉", title: isCn ? "西瓜/狗狗" : "Watermelon & Dogs", desc: isCn ? "補水夏日零食" : "Hydrating summer treat", href:"/can-dogs-eat/watermelon", color:"#22c55e" },
                 ].map((item) => (
                   <a key={item.href} href={item.href} style={{ display:"flex", alignItems:"center", gap:"12px", padding:"14px 16px", borderRadius:"14px", background:"rgba(255,255,255,0.03)", border:`1px solid ${item.color}22`, textDecoration:"none", color:"#e2e8f0", transition:"all 0.2s ease" }}
                     onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.06)"; e.currentTarget.style.borderColor = item.color + "44"; }}
@@ -989,15 +1001,15 @@ export default function Home() {
 
             {/* Emergency Section */}
             <div style={{ maxWidth:"580px", margin:"0 auto", padding:"32px 20px 0" }}>
-              <h2 style={{ fontSize:"18px", fontWeight:700, color:"#e2e8f0", textAlign:"center", marginBottom:"20px" }}>🚨 Emergency Guides</h2>
+              <h2 style={{ fontSize:"18px", fontWeight:700, color:"#e2e8f0", textAlign:"center", marginBottom:"20px" }}>{isCn ? "🚨 緊急指南" : "🚨 Emergency Guides"}</h2>
               <div style={{ display:"flex", flexDirection:"column", gap:"8px" }}>
                 {[
-                  { title:"My Dog Ate Chocolate", titleCn:"狗吃了巧克力", href:"/pet-safety/dog-ate-chocolate" },
-                  { title:"My Dog Ate Grapes", titleCn:"狗吃了葡萄", href:"/pet-safety/dog-ate-grapes" },
-                  { title:"My Dog Ate Xylitol / Gum", titleCn:"狗吃了木糖醇/口香糖", href:"/pet-safety/dog-ate-xylitol" },
-                  { title:"My Cat Ate a Lily", titleCn:"貓吃了百合花", href:"/pet-safety/cat-ate-lily" },
-                  { title:"My Cat Ate Chocolate", titleCn:"貓吃了巧克力", href:"/pet-safety/cat-ate-chocolate" },
-                  { title:"Emergency Contacts & Hotlines", titleCn:"寵物急救電話", href:"/pet-safety/pet-emergency-contacts" },
+                  { title: isCn ? "我的狗吃了巧克力" : "My Dog Ate Chocolate", href:"/pet-safety/dog-ate-chocolate" },
+                  { title: isCn ? "我的狗吃了葡萄" : "My Dog Ate Grapes", href:"/pet-safety/dog-ate-grapes" },
+                  { title: isCn ? "我的狗吃了木糖醇/口香糖" : "My Dog Ate Xylitol / Gum", href:"/pet-safety/dog-ate-xylitol" },
+                  { title: isCn ? "我的貓吃了百合花" : "My Cat Ate a Lily", href:"/pet-safety/cat-ate-lily" },
+                  { title: isCn ? "我的貓吃了巧克力" : "My Cat Ate Chocolate", href:"/pet-safety/cat-ate-chocolate" },
+                  { title: isCn ? "寵物急救電話" : "Emergency Contacts & Hotlines", href:"/pet-safety/pet-emergency-contacts" },
                 ].map((item) => (
                   <a key={item.href} href={item.href} style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"14px 18px", borderRadius:"12px", background:"rgba(239,68,68,0.05)", border:"1px solid rgba(239,68,68,0.15)", textDecoration:"none", color:"#fca5a5", fontSize:"14px", fontWeight:600, transition:"all 0.2s ease" }}
                     onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(239,68,68,0.1)"; }}
@@ -1011,7 +1023,7 @@ export default function Home() {
 
             {/* Browse All Articles */}
             <div style={{ maxWidth:"580px", margin:"0 auto", padding:"32px 20px 0" }}>
-              <h2 style={{ fontSize:"18px", fontWeight:700, color:"#e2e8f0", textAlign:"center", marginBottom:"20px" }}>📚 Browse All 200 Articles</h2>
+              <h2 style={{ fontSize:"18px", fontWeight:700, color:"#e2e8f0", textAlign:"center", marginBottom:"20px" }}>{isCn ? "📚 瀏覽全部 200 篇文章" : "📚 Browse All 200 Articles"}</h2>
               
               {/* Dogs */}
               <div style={{ marginBottom:"24px" }}>
