@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import Head from "next/head";
+import CN from "../lib/cn";
 
 // ============================================================
 // CanMyPetEat - Pet Food Ingredient Safety Checker
@@ -421,7 +422,85 @@ const INGREDIENT_DB = {
     { name: "chicken breast", display: "Chicken Breast (plain)", pets: ["dog", "cat"], description: "Lean, high-quality protein. Boil or bake without seasoning. Remove skin and bones." },
     { name: "ground beef", display: "Lean Ground Beef", pets: ["dog", "cat"], description: "Cook thoroughly and drain excess fat. Choose lean (90%+) for pets." },
     { name: "white fish", display: "White Fish", pets: ["dog", "cat"], description: "Mild, easily digestible protein. Great for pets with sensitive stomachs." },
+    { name: "melon", display: "Melon", pets: ["dog", "cat"], description: "Safe in small amounts. Remove rind and seeds. Hydrating treat but high in sugar." },
+    { name: "coconut flesh", display: "Coconut Flesh", pets: ["dog", "cat"], description: "Small amounts safe. High in fat so feed sparingly." },
+    { name: "seaweed", display: "Plain Seaweed / Nori", pets: ["dog", "cat"], description: "Unseasoned nori is safe and nutritious. Avoid seasoned/salted varieties." },
+    { name: "edamame", display: "Edamame (plain)", pets: ["dog"], description: "Plain, unsalted edamame is safe. Good protein source. Remove from pod for small dogs." },
+    { name: "tofu", display: "Tofu (plain)", pets: ["dog", "cat"], description: "Plain tofu in small amounts is safe. Good protein for dogs with meat allergies." },
+    { name: "guava", display: "Guava", pets: ["dog", "cat"], description: "Safe in small amounts. Rich in vitamin C and fiber. Remove seeds (may cause constipation)." },
+    { name: "dragon fruit", display: "Dragon Fruit (Pitaya)", pets: ["dog", "cat"], description: "Safe in small amounts. Low calorie, high in fiber and antioxidants. Remove skin before serving." },
+    { name: "lychee", display: "Lychee (flesh only)", pets: ["dog", "cat"], description: "Flesh is safe in small amounts. ALWAYS remove skin and seed. Seeds contain toxins and are a choking hazard." },
+    { name: "wax apple", display: "Wax Apple", pets: ["dog", "cat"], description: "Safe in small amounts. Low calorie and hydrating. Remove seeds." },
+    { name: "passion fruit", display: "Passion Fruit (flesh only)", pets: ["dog", "cat"], description: "Flesh and juice are safe in small amounts. Seeds are safe in small quantities. Remove rind." },
   ],
+  caution_extra: [],
+};
+
+// Additional caution items
+INGREDIENT_DB.caution.push(
+  { name: "longan", display: "Longan", pets: ["dog", "cat"], severity: "low",
+    description: "Flesh is safe in small amounts but very high in sugar. ALWAYS remove skin and seed — seeds are a choking hazard and contain saponins.",
+    symptoms: "Seed: choking, intestinal blockage. Flesh: GI upset from too much sugar" },
+  { name: "durian", display: "Durian", pets: ["dog", "cat"], severity: "moderate",
+    description: "Flesh in very small amounts is not toxic, but extremely high in fat and sugar. Seeds are toxic. The strong smell often deters pets.",
+    symptoms: "Diarrhea, vomiting, bloating from high fat. Seeds: potential toxicity" },
+  { name: "custard apple", display: "Custard Apple / Sugar Apple", pets: ["dog", "cat"], severity: "moderate",
+    description: "Flesh is okay in tiny amounts. Seeds are TOXIC — contain annonacin which is neurotoxic. Skin is also not safe.",
+    symptoms: "Seeds: neurological damage, vomiting. Flesh in excess: GI upset from high sugar" },
+  { name: "jackfruit", display: "Jackfruit", pets: ["dog", "cat"], severity: "low",
+    description: "Flesh is safe in small amounts. Very high in sugar and fiber. Remove seeds (contain trypsin inhibitors) and rind.",
+    symptoms: "GI upset, diarrhea from excess fiber or sugar" },
+  { name: "taro", display: "Taro (cooked only)", pets: ["dog", "cat"], severity: "moderate",
+    description: "MUST be fully cooked. Raw taro contains calcium oxalate crystals that cause severe mouth and throat irritation. Cooked taro in small amounts is safe.",
+    symptoms: "Raw: intense mouth burning, drooling, swelling, difficulty swallowing. Cooked: safe in small amounts" },
+  { name: "bamboo shoot", display: "Bamboo Shoot (cooked)", pets: ["dog", "cat"], severity: "low",
+    description: "Cooked bamboo shoots are safe in small amounts. Raw bamboo shoots contain cyanogenic glycosides. Always cook thoroughly.",
+    symptoms: "Raw: potential cyanide toxicity. Cooked: generally safe" },
+  { name: "stinky tofu", display: "Stinky Tofu", pets: ["dog", "cat"], severity: "moderate",
+    description: "High in sodium and often deep-fried with heavy seasonings. The fermentation process and spices make it unsuitable for pets.",
+    symptoms: "GI upset, excessive thirst from sodium, diarrhea" },
+  { name: "bubble tea", display: "Bubble Tea / Boba", pets: ["dog", "cat"], severity: "moderate",
+    description: "Contains caffeine (tea), extremely high sugar, and tapioca pearls are a choking hazard. Milk-based versions add lactose issues.",
+    symptoms: "Caffeine toxicity, GI upset, choking on boba pearls" },
+  { name: "moon cake", display: "Moon Cake / Mooncake", pets: ["dog", "cat"], severity: "moderate",
+    description: "Extremely high in sugar and fat. Often contains lotus seed paste, egg yolk, and nuts. Some contain xylitol or raisins.",
+    symptoms: "GI upset, pancreatitis from high fat. Check for raisins/xylitol" },
+  { name: "pork floss", display: "Pork Floss (肉鬆)", pets: ["dog", "cat"], severity: "low",
+    description: "High in sodium and often contains sugar and soy sauce. Unseasoned dried meat in small amounts is safer.",
+    symptoms: "Excessive thirst from sodium, GI upset" },
+);
+
+delete INGREDIENT_DB.caution_extra;
+
+// Brand info database
+const BRAND_DB = {
+  "royal canin": { d:"Royal Canin 皇家", type:"cat/dog", rating:"B", desc:"Major pet food brand owned by Mars. Uses corn, wheat, and by-products as fillers in some lines. Higher-end prescription diets are well-formulated. Main concerns: corn/wheat as primary ingredients in some formulas, use of by-product meal, BHA preservative in some products.", descCn:"Mars集團旗下主要寵物食品品牌。部分產品線使用玉米、小麥和副產品作為填充物。高端處方飼料配方良好。主要疑慮：部分配方以玉米/小麥為主要成分、使用副產品粉、部分產品含BHA防腐劑。" },
+  "whiskas": { d:"Whiskas 偉嘉", type:"cat", rating:"C", desc:"Budget cat food brand by Mars. Heavy use of grains, by-products, and artificial colors. Low meat content compared to premium brands. Contains artificial colors (Red 40, Yellow 5) that provide no nutritional value.", descCn:"Mars旗下平價貓糧品牌。大量使用穀物、副產品和人工色素。肉類含量低於高檔品牌。含無營養價值的人工色素（紅色40號、黃色5號）。" },
+  "hills": { d:"Hill's 希爾思", type:"cat/dog", rating:"B+", desc:"Science-based pet food brand. Prescription diets are highly regarded by vets. Regular lines use some fillers. Science Diet line is a solid choice. Main ingredients are generally transparent.", descCn:"以科學為基礎的寵物食品品牌。處方飼料深受獸醫推崇。一般產品線使用部分填充物。Science Diet系列是不錯的選擇。成分通常較透明。" },
+  "purina": { d:"Purina 普瑞納", type:"cat/dog", rating:"B-", desc:"Nestlé-owned brand with wide range from budget to premium. Pro Plan line is decent. Some products contain artificial colors, by-products, and corn gluten meal. Quality varies significantly by product line.", descCn:"雀巢旗下品牌，產品線從平價到高檔都有。Pro Plan系列品質不錯。部分產品含人工色素、副產品和玉米麩質。品質因產品線差異很大。" },
+  "fancy feast": { d:"Fancy Feast", type:"cat", rating:"B-", desc:"Purina's wet cat food brand. Classic pâté line has decent meat content. Some varieties contain by-products and artificial colors. Gravy lovers line is higher in carbs. Overall acceptable for wet food.", descCn:"Purina的濕貓糧品牌。經典慕斯系列肉類含量不錯。部分口味含副產品和人工色素。肉汁系列碳水較高。整體作為濕糧可接受。" },
+  "sheba": { d:"Sheba", type:"cat", rating:"B", desc:"Mars premium wet cat food brand. Generally higher meat content than Whiskas. Some varieties have cleaner ingredient lists. A decent mid-range wet food option.", descCn:"Mars旗下高檔濕貓糧品牌。肉類含量通常高於偉嘉。部分口味成分較乾淨。中檔濕糧不錯的選擇。" },
+  "iams": { d:"IAMS 愛慕思", type:"cat/dog", rating:"B", desc:"Mars-owned brand. Uses real meat as first ingredient in most formulas. Some products contain corn and by-products. ProActive Health line is a reasonable choice for everyday feeding.", descCn:"Mars旗下品牌。大多數配方以真正肉類為第一成分。部分產品含玉米和副產品。ProActive Health系列是日常餵食的合理選擇。" },
+  "blue buffalo": { d:"Blue Buffalo 藍饌", type:"cat/dog", rating:"A-", desc:"Premium brand focusing on natural ingredients. No by-products, corn, wheat, or soy. Uses real meat as first ingredient. LifeSource Bits contain antioxidants. One of the better mainstream options.", descCn:"主打天然成分的高檔品牌。不含副產品、玉米、小麥或大豆。以真正肉類為第一成分。LifeSource Bits含抗氧化物。主流品牌中較好的選擇之一。" },
+  "orijen": { d:"Orijen 渴望", type:"cat/dog", rating:"A", desc:"Ultra-premium biologically appropriate food. Very high meat content (75-85%). Uses fresh and raw animal ingredients. No grains, potatoes, or plant protein concentrates. One of the highest quality commercial pet foods available.", descCn:"超高檔生物學適當飼料。肉類含量極高（75-85%）。使用新鮮和生的動物成分。不含穀物、馬鈴薯或植物蛋白濃縮物。市面上品質最高的商業寵物食品之一。" },
+  "acana": { d:"ACANA 愛肯拿", type:"cat/dog", rating:"A-", desc:"Premium brand by the makers of Orijen. High meat content (50-75%). Uses regionally sourced ingredients. Limited carbohydrate content. Good balance of quality and value.", descCn:"與Orijen同廠的高檔品牌。肉類含量高（50-75%）。使用在地採購的原料。碳水化合物含量低。品質與價值兼具。" },
+  "friskies": { d:"Friskies 喜躍", type:"cat", rating:"C", desc:"Budget Purina cat food. High in grains and by-products. Contains artificial colors and flavors. Low meat content. Acceptable as occasional wet food but not ideal for primary diet.", descCn:"Purina平價貓糧。穀物和副產品含量高。含人工色素和香料。肉類含量低。偶爾作為濕糧可接受但不適合作為主食。" },
+  "meow mix": { d:"Meow Mix", type:"cat", rating:"C", desc:"Budget cat food. First ingredients are often corn and by-products. Contains artificial colors. Low in quality protein. Not recommended as a primary diet.", descCn:"平價貓糧。第一成分通常是玉米和副產品。含人工色素。優質蛋白質含量低。不建議作為主食。" },
+};
+
+const BRAND_ALIASES = {
+  "皇家":"royal canin", "皇家貓糧":"royal canin", "皇家狗糧":"royal canin", "royal canin":"royal canin",
+  "偉嘉":"whiskas", "伟嘉":"whiskas", "whiskas":"whiskas",
+  "希爾思":"hills", "希尔思":"hills", "hills":"hills", "hill's":"hills", "science diet":"hills",
+  "普瑞納":"purina", "普瑞纳":"purina", "purina":"purina", "pro plan":"purina",
+  "fancy feast":"fancy feast", "珍致":"fancy feast",
+  "sheba":"sheba",
+  "愛慕思":"iams", "iams":"iams",
+  "藍饌":"blue buffalo", "蓝馔":"blue buffalo", "blue buffalo":"blue buffalo", "blue":"blue buffalo",
+  "渴望":"orijen", "orijen":"orijen",
+  "愛肯拿":"acana", "acana":"acana",
+  "喜躍":"friskies", "friskies":"friskies",
+  "meow mix":"meow mix",
 };
 
 const ALL_INGREDIENTS = [
@@ -434,6 +513,16 @@ function analyzeIngredients(text, petType) {
   const lowerText = text.toLowerCase();
   const found = [];
   const matched = new Set();
+
+  // Check for brand names first
+  let brandMatch = null;
+  for (const [alias, brandKey] of Object.entries(BRAND_ALIASES)) {
+    if (lowerText.includes(alias.toLowerCase())) {
+      brandMatch = { key: brandKey, ...BRAND_DB[brandKey] };
+      break;
+    }
+  }
+
   for (const ingredient of ALL_INGREDIENTS) {
     if (matched.has(ingredient.name)) continue;
     if (petType !== "both" && !ingredient.pets.includes(petType)) continue;
@@ -485,13 +574,168 @@ function analyzeIngredients(text, petType) {
     if (ingredient.name === "tea") searchTerms.push("green tea", "black tea", "iced tea");
     if (ingredient.name === "coconut water") searchTerms.push("coconut milk");
     if (ingredient.name === "star fruit") searchTerms.push("starfruit", "carambola");
+    if (ingredient.name === "melon") searchTerms.push("melons", "honeydew melon", "galia melon", "rock melon", "canary melon");
+    if (ingredient.name === "coconut flesh") searchTerms.push("coconut meat", "fresh coconut");
+    if (ingredient.name === "seaweed") searchTerms.push("nori", "kelp", "kombu", "wakame");
+    if (ingredient.name === "edamame") searchTerms.push("soybean", "soybeans", "green soybean");
+    if (ingredient.name === "tofu") searchTerms.push("bean curd", "soy curd");
+    if (ingredient.name === "guava") searchTerms.push("guavas", "pink guava");
+    if (ingredient.name === "dragon fruit") searchTerms.push("dragonfruit", "pitaya", "pitahaya");
+    if (ingredient.name === "lychee") searchTerms.push("litchi", "lichee", "lichi");
+    if (ingredient.name === "wax apple") searchTerms.push("java apple", "rose apple", "bell fruit");
+    if (ingredient.name === "passion fruit") searchTerms.push("passionfruit", "maracuya", "lilikoi");
+    if (ingredient.name === "longan") searchTerms.push("longans", "dragon eye fruit");
+    if (ingredient.name === "durian") searchTerms.push("durians", "king of fruits");
+    if (ingredient.name === "custard apple") searchTerms.push("sugar apple", "sweetsop", "atemoya", "cherimoya");
+    if (ingredient.name === "jackfruit") searchTerms.push("jack fruit");
+    if (ingredient.name === "taro") searchTerms.push("taro root", "dasheen", "eddoe");
+    if (ingredient.name === "bamboo shoot") searchTerms.push("bamboo shoots", "menma");
+    if (ingredient.name === "stinky tofu") searchTerms.push("fermented tofu", "chou doufu");
+    if (ingredient.name === "bubble tea") searchTerms.push("boba tea", "boba", "milk tea", "tapioca tea", "pearl milk tea");
+    if (ingredient.name === "moon cake") searchTerms.push("mooncake", "mid-autumn cake");
+    if (ingredient.name === "pork floss") searchTerms.push("meat floss", "rousong", "pork sung", "fish floss");
+    // Chinese / 中文 search terms
+    const cnMap = {
+      "onion": ["洋蔥","洋葱"], "garlic": ["大蒜","蒜頭","蒜头","蒜"], "leek": ["韭菜","韭蔥","韭葱"],
+      "chive": ["細香蔥","韭黃","韭黄"], "shallot": ["紅蔥頭","红葱头","珠蔥"], "scallion": ["蔥","葱","青蔥","青葱"],
+      "chocolate": ["巧克力","朱古力"], "cocoa": ["可可","可可粉"], "theobromine": ["可可鹼","可可碱"],
+      "caffeine": ["咖啡因"], "coffee": ["咖啡","咖啡豆"],
+      "xylitol": ["木糖醇"], "birch sugar": ["樺糖","桦糖"],
+      "grape": ["葡萄"], "raisin": ["葡萄乾","葡萄干"], "sultana": ["無核葡萄乾","无核葡萄干"], "currant": ["醋栗","黑加侖"],
+      "macadamia": ["夏威夷豆","澳洲堅果","澳洲坚果","夏威夷果"],
+      "alcohol": ["酒","酒精"], "ethanol": ["乙醇"], "beer": ["啤酒"], "wine": ["葡萄酒","紅酒","红酒","白酒"],
+      "yeast dough": ["生麵團","生面团","發酵麵團"], "nutmeg": ["肉豆蔻","豆蔻"],
+      "hop": ["啤酒花"], "marijuana": ["大麻","大麻草"], "cannabis": ["大麻","THC"],
+      "tobacco": ["菸草","烟草","香菸","香烟"], "star fruit": ["楊桃","杨桃"],
+      "wild mushroom": ["野菇","野蘑菇","毒蘑菇"], "persimmon": ["柿子"],
+      "avocado": ["酪梨","牛油果","鱷梨","鳄梨"], "salt": ["鹽","盐","食鹽","食盐"],
+      "dairy": ["乳製品","乳制品","奶製品"], "milk": ["牛奶","鮮奶","鲜奶","奶"],
+      "cheese": ["起司","芝士","乳酪","奶酪"], "citrus": ["柑橘","柑橘類"],
+      "lemon": ["檸檬","柠檬"], "lime": ["萊姆","青檸","青柠"],
+      "raw egg": ["生蛋","生雞蛋"], "raw meat": ["生肉"], "raw fish": ["生魚","生鱼","生魚片","刺身"],
+      "bone": ["骨頭","骨头","雞骨","鸡骨"], "cherry": ["櫻桃","樱桃"],
+      "coconut": ["椰子","椰肉"], "corn": ["玉米"], "wheat": ["小麥","小麦","麵粉","面粉"],
+      "soy": ["大豆","黃豆","黄豆","豆漿","豆浆"],
+      "bacon": ["培根","煙肉","烟肉"], "ham": ["火腿"], "sausage": ["香腸","香肠","臘腸","腊肠"],
+      "hot dog": ["熱狗","热狗"], "pepperoni": ["義式臘腸","意式腊肠"], "salami": ["薩拉米","莎樂美"],
+      "jerky": ["肉乾","肉干","牛肉乾","牛肉干"], "liver": ["肝","肝臟","肝脏","雞肝","鸡肝"],
+      "pizza": ["披薩","披萨","比薩"], "french fry": ["薯條","薯条","炸薯條"],
+      "chip": ["洋芋片","薯片","餅乾","饼干"], "popcorn": ["爆米花"],
+      "bread": ["麵包","面包","吐司"], "toast": ["吐司","烤麵包","烤面包","土司"],
+      "noodle": ["麵","面","麵條","面条","泡麵","泡面","拉麵","拉面","烏龍麵","乌龙面","蕎麥麵","荞麦面","意大利麵","意大利面","米粉","河粉","冬粉","粉絲","粉丝"],
+      "pasta": ["義大利麵","意大利面","通心粉","筆管麵","千層麵"],
+      "potato": ["馬鈴薯","马铃薯","土豆","薯仔"], "tomato": ["番茄","西紅柿","西红柿"],
+      "garlic bread": ["蒜味麵包","蒜味面包","大蒜麵包"],
+      "ice cream": ["冰淇淋","雪糕","冰棒","霜淇淋"],
+      "candy": ["糖果","軟糖","软糖","糖"], "cookie": ["餅乾","饼干","曲奇"],
+      "cake": ["蛋糕","杯子蛋糕","馬芬","布朗尼"], "donut": ["甜甜圈","冬甩"],
+      "cinnamon": ["肉桂","桂皮"], "ginger": ["薑","姜","生薑","生姜"],
+      "honey": ["蜂蜜","蜜糖"], "mustard": ["芥末","黃芥末","黄芥末","芥菜"],
+      "pepper": ["胡椒","黑胡椒","辣椒"], "jalapeno": ["墨西哥辣椒","哈拉佩紐"],
+      "almond": ["杏仁","杏仁果"], "walnut": ["核桃","胡桃"],
+      "pistachio": ["開心果","开心果"], "cashew": ["腰果"],
+      "pecan": ["碧根果","美國山核桃","山核桃"],
+      "pineapple": ["鳳梨","凤梨","菠蘿","菠萝"], "orange": ["橘子","柳橙","橙子","柳丁"],
+      "peach": ["桃子","水蜜桃"], "plum": ["李子","梅子"],
+      "kiwi": ["奇異果","奇异果","獼猴桃","猕猴桃"], "papaya": ["木瓜"],
+      "fig": ["無花果","无花果"], "pomegranate": ["石榴"],
+      "taco": ["塔可","墨西哥捲餅","墨西哥卷饼"],
+      "crab": ["螃蟹","蟹","蟹肉"], "lobster": ["龍蝦","龙虾"],
+      "squid": ["魷魚","鱿鱼","花枝","小卷","透抽"], "oyster": ["牡蠣","牡蛎","生蠔","生蚝"],
+      "clam": ["蛤蜊","蛤","文蛤","海瓜子"],
+      "tea": ["茶","綠茶","绿茶","紅茶","红茶","烏龍茶","乌龙茶"],
+      "soda": ["汽水","可樂","可乐"], "juice": ["果汁"],
+      "coconut water": ["椰子水","椰奶"],
+      "butter": ["奶油","牛油","黃油","黄油"], "mayo": ["美乃滋","蛋黃醬","蛋黄酱"],
+      "ketchup": ["番茄醬","番茄酱"], "soy sauce": ["醬油","酱油","豉油"],
+      "chicken": ["雞肉","鸡肉","雞","鸡"], "turkey": ["火雞","火鸡","火雞肉"],
+      "beef": ["牛肉","牛"], "salmon": ["鮭魚","鲑鱼","三文魚","三文鱼"],
+      "tuna": ["鮪魚","鲔鱼","金槍魚","金枪鱼","吞拿魚"],
+      "shrimp": ["蝦","虾","蝦子","虾子","蝦仁","虾仁"],
+      "carrot": ["胡蘿蔔","胡萝卜","紅蘿蔔","红萝卜"],
+      "green bean": ["四季豆","豆角","綠豆角"],
+      "pumpkin": ["南瓜"], "sweet potato": ["地瓜","番薯","甘薯"],
+      "blueberry": ["藍莓","蓝莓"], "watermelon": ["西瓜"],
+      "apple": ["蘋果","苹果"], "banana": ["香蕉"],
+      "rice": ["白飯","白饭","米飯","米饭","白米","米"],
+      "oatmeal": ["燕麥","燕麦","麥片","麦片"],
+      "peanut butter": ["花生醬","花生酱"],
+      "egg": ["蛋","雞蛋","鸡蛋","鴨蛋","鹌鹑蛋"],
+      "cucumber": ["小黃瓜","小黄瓜","黃瓜","黄瓜"],
+      "broccoli": ["花椰菜","西蘭花","西兰花","綠花菜"],
+      "spinach": ["菠菜","菠薐菜"],
+      "pea": ["豌豆","碗豆","青豆"],
+      "cranberry": ["蔓越莓","小紅莓"],
+      "mango": ["芒果","檬果"],
+      "pear": ["梨子","梨","水梨"],
+      "pork": ["豬肉","猪肉","豬","猪"], "lamb": ["羊肉","小羊肉"],
+      "duck": ["鴨肉","鸭肉","鴨","鸭"], "venison": ["鹿肉"],
+      "rabbit": ["兔肉","兔"],
+      "sardine": ["沙丁魚","沙丁鱼"], "cod": ["鱈魚","鳕鱼"],
+      "tilapia": ["吳郭魚","吴郭鱼","羅非魚","罗非鱼","台灣鯛"],
+      "cottage cheese": ["茅屋起司","卡達起司"],
+      "yogurt": ["優格","优格","優酪乳","酸奶"],
+      "strawberry": ["草莓"], "raspberry": ["覆盆子","覆盆莓"],
+      "blackberry": ["黑莓"], "cantaloupe": ["哈密瓜","香瓜"],
+      "honeydew": ["蜜瓜","白蘭瓜"],
+      "celery": ["芹菜","西洋芹"], "zucchini": ["櫛瓜","栉瓜","西葫蘆","西葫芦"],
+      "lettuce": ["生菜","萵苣","莴苣","美生菜"],
+      "cabbage": ["高麗菜","高丽菜","包心菜","捲心菜","圓白菜"],
+      "cauliflower": ["白花椰菜","花菜","菜花"],
+      "bell pepper": ["甜椒","彩椒","青椒"],
+      "asparagus": ["蘆筍","芦笋"],
+      "brussels sprout": ["球芽甘藍","抱子甘蓝"],
+      "kale": ["羽衣甘藍","羽衣甘蓝"],
+      "squash": ["南瓜","冬瓜","栗子南瓜"],
+      "parsley": ["巴西里","荷蘭芹","洋香菜","欧芹"],
+      "turmeric": ["薑黃","姜黄"],
+      "quinoa": ["藜麥","藜麦"],
+      "brown rice": ["糙米","玄米"],
+      "barley": ["大麥","大麦"],
+      "chicken breast": ["雞胸肉","鸡胸肉"],
+      "ground beef": ["牛絞肉","牛绞肉","碎牛肉","漢堡肉"],
+      "white fish": ["白肉魚","白肉鱼"],
+      "ethoxyquin": ["乙氧基喹"], "bha": ["丁基羥基茴香醚"],
+      "bht": ["二丁基羥基甲苯"], "carrageenan": ["鹿角菜膠","卡拉膠"],
+      "sodium nitrite": ["亞硝酸鈉","亚硝酸钠"],
+      "propylene glycol": ["丙二醇"],
+      "artificial color": ["人工色素","食用色素"],
+      "melon": ["甜瓜","蜜瓜","哈密瓜","香瓜","美濃瓜"],
+      "coconut flesh": ["椰肉","新鮮椰子"],
+      "seaweed": ["海苔","海帶","昆布","裙帶菜","紫菜","海藻"],
+      "edamame": ["毛豆","枝豆"],
+      "tofu": ["豆腐","豆干","豆乾","板豆腐","嫩豆腐"],
+      "guava": ["芭樂","芭乐","番石榴"],
+      "dragon fruit": ["火龍果","火龙果","紅龍果","白龍果"],
+      "lychee": ["荔枝","荔枝肉","妃子笑"],
+      "wax apple": ["蓮霧","莲雾"],
+      "passion fruit": ["百香果","西番蓮","西番莲"],
+      "longan": ["龍眼","龙眼","桂圓","桂圆"],
+      "durian": ["榴槤","榴莲","榴蓮"],
+      "custard apple": ["釋迦","释迦","番荔枝","鳳梨釋迦"],
+      "jackfruit": ["波羅蜜","波罗蜜","菠蘿蜜"],
+      "taro": ["芋頭","芋头","芋","芋泥"],
+      "bamboo shoot": ["竹筍","竹笋","筍","笋"],
+      "stinky tofu": ["臭豆腐"],
+      "bubble tea": ["珍珠奶茶","波霸奶茶","珍奶","奶茶","手搖飲","手摇饮"],
+      "moon cake": ["月餅","月饼","蛋黃酥","鳳梨酥"],
+      "pork floss": ["肉鬆","肉松","肉絲","魚鬆"],
+    };
+    const cnTerms = cnMap[ingredient.name];
     for (const term of searchTerms) {
       const regex = new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
       if (regex.test(lowerText)) { found.push(ingredient); matched.add(ingredient.name); break; }
     }
+    // Chinese matching (no word boundaries needed for CJK)
+    if (!matched.has(ingredient.name) && cnTerms) {
+      for (const cn of cnTerms) {
+        if (lowerText.includes(cn)) { found.push(ingredient); matched.add(ingredient.name); break; }
+      }
+    }
   }
   const order = { toxic: 0, caution: 1, safe: 2 };
   found.sort((a, b) => order[a.category] - order[b.category]);
+  found.brandMatch = brandMatch;
   return found;
 }
 
@@ -506,10 +750,15 @@ function calculateScore(results) {
 }
 
 function getScoreColor(s) { return { A:"#22c55e", B:"#84cc16", C:"#eab308", D:"#f97316", F:"#ef4444" }[s] || "#6b7280"; }
-function getScoreLabel(s) { return { A:"Excellent — All clear!", B:"Good — Minor concerns", C:"Fair — Several concerns", D:"Poor — Risky ingredients", F:"Dangerous — Toxic ingredients found!" }[s] || ""; }
-function getCategoryStyle(c) {
+function getScoreLabel(s, isCn) {
+  if (isCn) return { A:"優秀 — 全部安全！", B:"良好 — 有小問題", C:"一般 — 有些疑慮", D:"差 — 有風險成分", F:"危險 — 發現有毒成分！" }[s] || "";
+  return { A:"Excellent — All clear!", B:"Good — Minor concerns", C:"Fair — Several concerns", D:"Poor — Risky ingredients", F:"Dangerous — Toxic ingredients found!" }[s] || "";
+}
+function getCategoryStyle(c, isCn) {
+  if (isCn) return { toxic: { icon:"🚫", label:"危險" }, caution: { icon:"⚠️", label:"注意" }, safe: { icon:"✅", label:"安全" } }[c] || { icon:"❓", label:"未知" };
   return { toxic: { icon:"🚫", label:"DANGEROUS" }, caution: { icon:"⚠️", label:"CAUTION" }, safe: { icon:"✅", label:"SAFE" } }[c] || { icon:"❓", label:"UNKNOWN" };
 }
+function hasChinese(text) { return /[\u4e00-\u9fff]/.test(text); }
 
 export default function Home() {
   const [petType, setPetType] = useState("dog");
@@ -518,6 +767,7 @@ export default function Home() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [activeResult, setActiveResult] = useState(null);
+  const [isCn, setIsCn] = useState(false);
   const inputRef = useRef(null);
   const resultsRef = useRef(null);
 
@@ -525,6 +775,7 @@ export default function Home() {
     if (!inputText.trim()) return;
     setIsAnalyzing(true);
     setActiveResult(null);
+    setIsCn(hasChinese(inputText));
     setTimeout(() => {
       const found = analyzeIngredients(inputText, petType);
       setResults(found);
@@ -549,6 +800,8 @@ export default function Home() {
         <meta property="og:url" content="https://canmypeteat.app" />
         <meta name="twitter:card" content="summary_large_image" />
         <link rel="canonical" href="https://canmypeteat.app" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-6NQKMZS5NH"></script>
+        <script dangerouslySetInnerHTML={{__html:`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-6NQKMZS5NH');`}} />
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet" />
       </Head>
 
@@ -593,7 +846,7 @@ export default function Home() {
           <div style={{ borderRadius:"18px", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.08)", padding:"4px", marginBottom:"16px" }}>
             <textarea ref={inputRef} value={inputText} onChange={(e) => setInputText(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleAnalyze(); } }}
-              placeholder={"Paste ingredients here...\n\nExample: chicken, corn, wheat gluten, garlic powder, BHA, salt, natural flavors"}
+              placeholder={"Paste ingredients or brand name here...\n\nExample: chicken, corn, wheat gluten, garlic powder, BHA, salt\nBrand: Royal Canin, Whiskas, Orijen...\n\n也可以輸入中文：巧克力、皇家、芭樂、荔枝"}
               style={{ width:"100%", minHeight:"120px", padding:"16px", background:"transparent", border:"none", outline:"none", color:"#e2e8f0", fontSize:"15px", lineHeight:1.7, fontFamily:"'DM Sans', sans-serif", resize:"vertical", boxSizing:"border-box" }} />
             <div style={{ display:"flex", gap:"8px", padding:"8px 12px" }}>
               <button onClick={handleAnalyze} disabled={!inputText.trim() || isAnalyzing}
@@ -609,7 +862,7 @@ export default function Home() {
           {/* Quick examples */}
           <div style={{ display:"flex", gap:"6px", flexWrap:"wrap", marginBottom:"32px" }}>
             <span style={{ fontSize:"12px", color:"#475569", padding:"6px 0" }}>Try:</span>
-            {[{ label:"🍫 Chocolate", text:"chocolate, sugar, cocoa butter, milk" }, { label:"🧅 Onion soup", text:"onion, garlic, beef broth, butter, salt, bread, cheese" }, { label:"🐔 Chicken meal", text:"chicken breast, rice, carrots, peas, sweet potato" }].map((ex) => (
+            {[{ label:"🍫 Chocolate", text:"chocolate, sugar, cocoa butter, milk" }, { label:"🧅 Onion soup", text:"onion, garlic, beef broth, butter, salt, bread, cheese" }, { label:"🐔 Chicken meal", text:"chicken breast, rice, carrots, peas, sweet potato" }, { label:"🏷️ Royal Canin", text:"Royal Canin" }].map((ex) => (
               <button key={ex.label} onClick={() => { setInputText(ex.text); setResults(null); }}
                 style={{ padding:"6px 12px", borderRadius:"100px", border:"1px solid rgba(255,255,255,0.08)", background:"rgba(255,255,255,0.03)", color:"#94a3b8", cursor:"pointer", fontSize:"12px", fontFamily:"'DM Sans', sans-serif" }}>
                 {ex.label}
@@ -620,22 +873,49 @@ export default function Home() {
           {/* Results */}
           {results !== null && (
             <div ref={resultsRef} style={{ paddingBottom:"80px" }}>
+              {/* Brand match card */}
+              {results.brandMatch && (
+                <div style={{ marginBottom:"20px", padding:"20px", borderRadius:"16px", background:"linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(168,85,247,0.06) 100%)", border:"1px solid rgba(56,189,248,0.2)" }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"12px" }}>
+                    <span style={{ fontSize:"24px" }}>🏷️</span>
+                    <span style={{ fontWeight:700, fontSize:"18px", color:"#e0f2fe" }}>{results.brandMatch.d}</span>
+                    <span style={{ fontSize:"12px", fontWeight:700, padding:"3px 10px", borderRadius:"100px",
+                      background: results.brandMatch.rating.startsWith("A") ? "rgba(34,197,94,0.2)" : results.brandMatch.rating.startsWith("B") ? "rgba(234,179,8,0.2)" : "rgba(239,68,68,0.2)",
+                      color: results.brandMatch.rating.startsWith("A") ? "#86efac" : results.brandMatch.rating.startsWith("B") ? "#fcd34d" : "#fca5a5"
+                    }}>{isCn ? "評分" : "Rating"}: {results.brandMatch.rating}</span>
+                  </div>
+                  <p style={{ margin:0, fontSize:"14px", lineHeight:1.7, color:"#cbd5e1" }}>
+                    {isCn ? results.brandMatch.descCn : results.brandMatch.desc}
+                  </p>
+                  <p style={{ margin:"10px 0 0 0", fontSize:"12px", color:"#64748b" }}>
+                    {isCn ? "💡 提示：貼上該飼料的完整成分表，可獲得更詳細的成分分析。" : "💡 Tip: Paste the full ingredient list from the label for a detailed ingredient-by-ingredient analysis."}
+                  </p>
+                </div>
+              )}
               {score && (
                 <div style={{ textAlign:"center", marginBottom:"24px", padding:"28px 24px", borderRadius:"20px", background:`linear-gradient(135deg, ${getScoreColor(score)}11 0%, ${getScoreColor(score)}05 100%)`, border:`1px solid ${getScoreColor(score)}33` }}>
                   <div style={{ display:"inline-flex", alignItems:"center", justifyContent:"center", width:"72px", height:"72px", borderRadius:"18px", background:`${getScoreColor(score)}20`, border:`2px solid ${getScoreColor(score)}55`, fontSize:"36px", fontWeight:700, color:getScoreColor(score), fontFamily:"'Fraunces', Georgia, serif", marginBottom:"12px" }}>{score}</div>
-                  <div style={{ fontSize:"16px", fontWeight:600, color:getScoreColor(score), marginBottom:"4px" }}>{getScoreLabel(score)}</div>
-                  <div style={{ fontSize:"13px", color:"#64748b" }}>{results.filter(r => r.category === "toxic").length} dangerous · {results.filter(r => r.category === "caution").length} caution · {results.filter(r => r.category === "safe").length} safe</div>
+                  <div style={{ fontSize:"16px", fontWeight:600, color:getScoreColor(score), marginBottom:"4px" }}>{getScoreLabel(score, isCn)}</div>
+                  <div style={{ fontSize:"13px", color:"#64748b" }}>{results.filter(r => r.category === "toxic").length} {isCn?"危險":"dangerous"} · {results.filter(r => r.category === "caution").length} {isCn?"注意":"caution"} · {results.filter(r => r.category === "safe").length} {isCn?"安全":"safe"}</div>
                 </div>
               )}
               {results.length === 0 ? (
                 <div style={{ textAlign:"center", padding:"32px 24px", borderRadius:"16px", background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.08)" }}>
-                  <div style={{ fontSize:"40px", marginBottom:"12px" }}>🤔</div>
-                  <p style={{ color:"#94a3b8", margin:0, fontSize:"15px", lineHeight:1.6 }}>No recognized ingredients found. Try pasting a complete ingredient list from a pet food label, or type individual food names.</p>
+                  <div style={{ fontSize:"40px", marginBottom:"12px" }}>{results.brandMatch ? "📋" : "🤔"}</div>
+                  <p style={{ color:"#94a3b8", margin:0, fontSize:"15px", lineHeight:1.6 }}>{
+                    results.brandMatch
+                      ? (isCn ? "已找到品牌資訊！請貼上該飼料包裝背面的完整成分表，即可獲得逐一成分安全分析和評分。" : "Brand info found! Paste the full ingredient list from the back of the package to get a detailed ingredient-by-ingredient safety analysis and score.")
+                      : (isCn ? "未找到已知的食材。請嘗試輸入完整的寵物食品成分表，或輸入個別食物名稱。" : "No recognized ingredients found. Try pasting a complete ingredient list from a pet food label, or type individual food names.")
+                  }</p>
                 </div>
               ) : (
                 <div style={{ display:"flex", flexDirection:"column", gap:"10px" }}>
                   {results.map((item, idx) => {
-                    const sty = getCategoryStyle(item.category);
+                    const sty = getCategoryStyle(item.category, isCn);
+                    const cn = CN[item.name];
+                    const displayName = isCn && cn ? `${cn.d}（${item.display}）` : item.display;
+                    const desc = isCn && cn && cn.desc ? cn.desc : item.description;
+                    const symp = isCn && cn && cn.sym ? cn.sym : item.symptoms;
                     const isExp = activeResult === idx;
                     return (
                       <button key={idx} onClick={() => setActiveResult(isExp ? null : idx)}
@@ -644,23 +924,25 @@ export default function Home() {
                           <span style={{ fontSize:"20px", flexShrink:0 }}>{sty.icon}</span>
                           <div style={{ flex:1 }}>
                             <div style={{ display:"flex", alignItems:"center", gap:"8px", marginBottom:"2px", flexWrap:"wrap" }}>
-                              <span style={{ fontWeight:600, fontSize:"15px" }}>{item.display}</span>
+                              <span style={{ fontWeight:600, fontSize:"15px" }}>{displayName}</span>
                               <span style={{ fontSize:"10px", fontWeight:700, letterSpacing:"0.5px", padding:"2px 8px", borderRadius:"100px", background: item.category==="toxic" ? "rgba(239,68,68,0.15)" : item.category==="caution" ? "rgba(234,179,8,0.15)" : "rgba(34,197,94,0.15)", color: item.category==="toxic" ? "#fca5a5" : item.category==="caution" ? "#fcd34d" : "#86efac" }}>{sty.label}</span>
                               {item.severity === "high" && <span style={{ fontSize:"10px", fontWeight:700, padding:"2px 6px", borderRadius:"100px", background:"rgba(239,68,68,0.2)", color:"#fca5a5" }}>HIGH RISK</span>}
                             </div>
                             <div style={{ fontSize:"13px", color:"#64748b" }}>
-                              {item.category !== "safe" ? `Affects: ${item.pets.map(p => p==="dog" ? "🐕 Dogs" : "🐈 Cats").join(" & ")}` : `Safe for: ${item.pets.map(p => p==="dog" ? "🐕 Dogs" : "🐈 Cats").join(" & ")}`}
+                              {item.category !== "safe"
+                                ? (isCn ? `影響：${item.pets.map(p => p==="dog" ? "🐕 狗" : "🐈 貓").join(" & ")}` : `Affects: ${item.pets.map(p => p==="dog" ? "🐕 Dogs" : "🐈 Cats").join(" & ")}`)
+                                : (isCn ? `安全：${item.pets.map(p => p==="dog" ? "🐕 狗" : "🐈 貓").join(" & ")}` : `Safe for: ${item.pets.map(p => p==="dog" ? "🐕 Dogs" : "🐈 Cats").join(" & ")}`)}
                             </div>
                           </div>
                           <span style={{ fontSize:"18px", color:"#475569", transform: isExp ? "rotate(180deg)" : "rotate(0deg)", transition:"transform 0.2s ease" }}>▾</span>
                         </div>
                         {isExp && (
                           <div style={{ marginTop:"14px", paddingTop:"14px", borderTop:"1px solid rgba(255,255,255,0.06)" }}>
-                            <p style={{ margin:"0 0 10px 0", fontSize:"14px", lineHeight:1.7, color:"#cbd5e1" }}>{item.description}</p>
-                            {item.symptoms && (
+                            <p style={{ margin:"0 0 10px 0", fontSize:"14px", lineHeight:1.7, color:"#cbd5e1" }}>{desc}</p>
+                            {symp && (
                               <div style={{ padding:"10px 14px", borderRadius:"10px", background:"rgba(239,68,68,0.06)", border:"1px solid rgba(239,68,68,0.1)" }}>
-                                <div style={{ fontSize:"11px", fontWeight:700, color:"#f87171", letterSpacing:"0.5px", marginBottom:"4px" }}>SYMPTOMS TO WATCH FOR</div>
-                                <div style={{ fontSize:"13px", color:"#fca5a5", lineHeight:1.6 }}>{item.symptoms}</div>
+                                <div style={{ fontSize:"11px", fontWeight:700, color:"#f87171", letterSpacing:"0.5px", marginBottom:"4px" }}>{isCn ? "注意症狀" : "SYMPTOMS TO WATCH FOR"}</div>
+                                <div style={{ fontSize:"13px", color:"#fca5a5", lineHeight:1.6 }}>{symp}</div>
                               </div>
                             )}
                           </div>
@@ -677,14 +959,135 @@ export default function Home() {
           )}
 
           {!results && (
+            <>
+            {/* Popular Searches Section */}
+            <div style={{ maxWidth:"580px", margin:"0 auto", padding:"40px 20px 0" }}>
+              <h2 style={{ fontSize:"18px", fontWeight:700, color:"#e2e8f0", textAlign:"center", marginBottom:"20px" }}>🔥 Popular Searches</h2>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"10px" }}>
+                {[
+                  { emoji:"🍫", title:"Chocolate & Dogs", desc:"Theobromine toxicity", href:"/can-dogs-eat/chocolate", color:"#ef4444" },
+                  { emoji:"🍇", title:"Grapes & Dogs", desc:"Kidney failure risk", href:"/can-dogs-eat/grapes", color:"#ef4444" },
+                  { emoji:"🌷", title:"Lilies & Cats", desc:"#1 killer plant", href:"/pet-safety/cat-ate-lily", color:"#ef4444" },
+                  { emoji:"🧅", title:"Onions & Cats", desc:"Destroys red blood cells", href:"/pet-safety/cat-ate-onion", color:"#ef4444" },
+                  { emoji:"🥑", title:"Avocado & Cats", desc:"Persin toxin danger", href:"/can-cats-eat/avocado", color:"#eab308" },
+                  { emoji:"🐟", title:"Tuna & Cats", desc:"Mercury concerns", href:"/can-cats-eat/tuna-canned", color:"#eab308" },
+                  { emoji:"🫐", title:"Blueberries & Dogs", desc:"Antioxidant superfood", href:"/can-dogs-eat/blueberry", color:"#22c55e" },
+                  { emoji:"🍉", title:"Watermelon & Dogs", desc:"Hydrating summer treat", href:"/can-dogs-eat/watermelon", color:"#22c55e" },
+                ].map((item) => (
+                  <a key={item.href} href={item.href} style={{ display:"flex", alignItems:"center", gap:"12px", padding:"14px 16px", borderRadius:"14px", background:"rgba(255,255,255,0.03)", border:`1px solid ${item.color}22`, textDecoration:"none", color:"#e2e8f0", transition:"all 0.2s ease" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.06)"; e.currentTarget.style.borderColor = item.color + "44"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.03)"; e.currentTarget.style.borderColor = item.color + "22"; }}>
+                    <span style={{ fontSize:"24px", flexShrink:0 }}>{item.emoji}</span>
+                    <div>
+                      <div style={{ fontWeight:600, fontSize:"13px", lineHeight:1.3 }}>{item.title}</div>
+                      <div style={{ fontSize:"11px", color:"#64748b", marginTop:"2px" }}>{item.desc}</div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Emergency Section */}
+            <div style={{ maxWidth:"580px", margin:"0 auto", padding:"32px 20px 0" }}>
+              <h2 style={{ fontSize:"18px", fontWeight:700, color:"#e2e8f0", textAlign:"center", marginBottom:"20px" }}>🚨 Emergency Guides</h2>
+              <div style={{ display:"flex", flexDirection:"column", gap:"8px" }}>
+                {[
+                  { title:"My Dog Ate Chocolate", titleCn:"狗吃了巧克力", href:"/pet-safety/dog-ate-chocolate" },
+                  { title:"My Dog Ate Grapes", titleCn:"狗吃了葡萄", href:"/pet-safety/dog-ate-grapes" },
+                  { title:"My Dog Ate Xylitol / Gum", titleCn:"狗吃了木糖醇/口香糖", href:"/pet-safety/dog-ate-xylitol" },
+                  { title:"My Cat Ate a Lily", titleCn:"貓吃了百合花", href:"/pet-safety/cat-ate-lily" },
+                  { title:"My Cat Ate Chocolate", titleCn:"貓吃了巧克力", href:"/pet-safety/cat-ate-chocolate" },
+                  { title:"Emergency Contacts & Hotlines", titleCn:"寵物急救電話", href:"/pet-safety/pet-emergency-contacts" },
+                ].map((item) => (
+                  <a key={item.href} href={item.href} style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"14px 18px", borderRadius:"12px", background:"rgba(239,68,68,0.05)", border:"1px solid rgba(239,68,68,0.15)", textDecoration:"none", color:"#fca5a5", fontSize:"14px", fontWeight:600, transition:"all 0.2s ease" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(239,68,68,0.1)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(239,68,68,0.05)"; }}>
+                    <span>{item.title}</span>
+                    <span style={{ color:"#64748b", fontSize:"18px" }}>→</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Browse All Articles */}
+            <div style={{ maxWidth:"580px", margin:"0 auto", padding:"32px 20px 0" }}>
+              <h2 style={{ fontSize:"18px", fontWeight:700, color:"#e2e8f0", textAlign:"center", marginBottom:"20px" }}>📚 Browse All 200 Articles</h2>
+              
+              {/* Dogs */}
+              <div style={{ marginBottom:"24px" }}>
+                <h3 style={{ fontSize:"14px", fontWeight:700, color:"#38bdf8", marginBottom:"10px" }}>🐕 Dogs — Can They Eat...</h3>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:"6px" }}>
+                  {["apple","almond","asparagus","avocado","bacon","banana","beef","beets","blackberries","blueberry","broccoli","cabbage","cantaloupe","carrot","celery","cheese","cherries","chicken","chocolate","cinnamon","coconut","coconut-oil","corn","cranberries","cucumber","dragon-fruit","duck","durian","edamame","egg","garlic","ginger","grapes","green-beans","guava","honey","ice-cream","kiwi","lamb","lettuce","longan","lychee","mango","mushrooms","noodles","oatmeal","onion","oranges","papaya","passion-fruit","peach","peanut-butter","pear","pineapple","plum","popcorn","pork","potato","pumpkin","raspberry","rice","salmon","sardines","sausage","shrimp","spinach","strawberry","sweet-corn","sweet-potato","taro","tofu","tomato","tuna","turkey","wax-apple","watermelon","yogurt","zucchini"].map((slug) => (
+                    <a key={slug} href={`/can-dogs-eat/${slug}`} style={{ padding:"5px 12px", borderRadius:"100px", background:"rgba(56,189,248,0.08)", border:"1px solid rgba(56,189,248,0.15)", color:"#7dd3fc", fontSize:"12px", textDecoration:"none", transition:"all 0.15s ease", whiteSpace:"nowrap" }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(56,189,248,0.18)"; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(56,189,248,0.08)"; }}>
+                      {slug.replace(/-/g, " ")}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* Cats */}
+              <div style={{ marginBottom:"24px" }}>
+                <h3 style={{ fontSize:"14px", fontWeight:700, color:"#f472b6", marginBottom:"10px" }}>🐈 Cats — Can They Eat...</h3>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:"6px" }}>
+                  {["apple","asparagus","avocado","bacon","banana","beef","blueberry","bread","broccoli","cantaloupe","carrot","cheese","chicken","chocolate","coconut","corn","cucumber","dragon-fruit","duck","egg","garlic","green-bean","guava","ham","ice-cream","kiwi","lamb","lettuce","liver","longan","lychee","mango","melon","milk","onion","passion-fruit","pea","peach","pineapple","pork","potato","pumpkin","rice","salmon","sardine","shrimp","spinach","strawberry","sweet-potato","taro","tuna-canned","tuna-cooked","tuna-raw","turkey","wax-apple","watermelon","yogurt","zucchini"].map((slug) => (
+                    <a key={slug} href={`/can-cats-eat/${slug}`} style={{ padding:"5px 12px", borderRadius:"100px", background:"rgba(244,114,182,0.08)", border:"1px solid rgba(244,114,182,0.15)", color:"#f9a8d4", fontSize:"12px", textDecoration:"none", transition:"all 0.15s ease", whiteSpace:"nowrap" }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(244,114,182,0.18)"; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(244,114,182,0.08)"; }}>
+                      {slug.replace(/-/g, " ")}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* Brands */}
+              <div style={{ marginBottom:"24px" }}>
+                <h3 style={{ fontSize:"14px", fontWeight:700, color:"#fbbf24", marginBottom:"10px" }}>🏷️ Brand Reviews</h3>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:"6px" }}>
+                  {[
+                    { slug:"orijen", label:"Orijen (A)" },{ slug:"acana", label:"ACANA (A-)" },{ slug:"blue-buffalo", label:"Blue Buffalo (A-)" },
+                    { slug:"hills-science-diet", label:"Hill's (B+)" },{ slug:"royal-canin", label:"Royal Canin (B)" },{ slug:"iams", label:"IAMS (B)" },{ slug:"sheba", label:"Sheba (B)" },{ slug:"purina", label:"Purina (B-)" },
+                    { slug:"whiskas", label:"Whiskas (C)" },{ slug:"friskies", label:"Friskies (C)" },{ slug:"meow-mix", label:"Meow Mix (C)" },
+                  ].map((b) => (
+                    <a key={b.slug} href={`/brand-review/${b.slug}`} style={{ padding:"5px 12px", borderRadius:"100px", background:"rgba(251,191,36,0.08)", border:"1px solid rgba(251,191,36,0.15)", color:"#fcd34d", fontSize:"12px", textDecoration:"none", transition:"all 0.15s ease", whiteSpace:"nowrap" }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(251,191,36,0.18)"; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(251,191,36,0.08)"; }}>
+                      {b.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* Safety Guides */}
+              <div style={{ marginBottom:"24px" }}>
+                <h3 style={{ fontSize:"14px", fontWeight:700, color:"#f87171", marginBottom:"10px" }}>📋 Safety Guides</h3>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:"6px" }}>
+                  {[
+                    { slug:"foods-toxic-to-dogs", label:"Foods Toxic to Dogs" },{ slug:"foods-toxic-to-cats", label:"Foods Toxic to Cats" },
+                    { slug:"safe-fruits-for-dogs", label:"Safe Fruits for Dogs" },{ slug:"safe-fruits-for-cats", label:"Safe Fruits for Cats" },
+                    { slug:"holiday-food-dangers", label:"Holiday Food Dangers" },{ slug:"cat-safe-plants", label:"Cat-Safe Plants" },
+                    { slug:"pet-emergency-contacts", label:"Emergency Contacts" },
+                  ].map((g) => (
+                    <a key={g.slug} href={`/pet-safety/${g.slug}`} style={{ padding:"5px 12px", borderRadius:"100px", background:"rgba(248,113,113,0.08)", border:"1px solid rgba(248,113,113,0.15)", color:"#fca5a5", fontSize:"12px", textDecoration:"none", transition:"all 0.15s ease", whiteSpace:"nowrap" }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(248,113,113,0.18)"; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(248,113,113,0.08)"; }}>
+                      {g.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+
             <footer style={{ textAlign:"center", padding:"40px 0 60px", color:"#334155", fontSize:"13px" }}>
               <div style={{ marginBottom:"16px", display:"flex", justifyContent:"center", gap:"24px", flexWrap:"wrap" }}>
-                {["200+ ingredients", "Dogs & Cats", "No sign-up", "100% free"].map((f) => (
+                {["200+ articles", "95 dog foods", "71 cat foods", "14 brand reviews", "100% free"].map((f) => (
                   <span key={f} style={{ display:"flex", alignItems:"center", gap:"6px" }}><span style={{ color:"#38bdf8" }}>✦</span> {f}</span>
                 ))}
               </div>
               <p style={{ margin:0 }}>Built with ❤️ for pet parents everywhere</p>
             </footer>
+            </>
           )}
         </div>
 
