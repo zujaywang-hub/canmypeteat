@@ -1,0 +1,13 @@
+import { ArticleLayout, ArticleBody } from "../../lib/article";
+const faqs = [
+  { q: "Where is xylitol commonly found?", a: "Sugar-free gum, sugar-free candy, some peanut butters, sugar-free baked goods, toothpaste, mouthwash, some medications, and some protein bars. ALWAYS check labels." },
+  { q: "How much xylitol is dangerous for dogs?", a: "As little as 0.1g per kg of body weight can cause hypoglycemia. For a 10-pound dog, just a single piece of sugar-free gum could be lethal." },
+  { q: "Is xylitol dangerous for cats?", a: "The effects on cats are less documented, but it should be avoided for all pets. Cats rarely consume sweet items, so poisoning is less common." },
+];
+export default function Page() {
+  return (
+    <ArticleLayout title="Xylitol Poisoning in Dogs — The Hidden Killer | CanMyPetEat" description="Xylitol is extremely toxic to dogs and found in many common household products. Learn where it hides and what to do." canonical="/can-dogs-eat/xylitol" petType="dog" food="Xylitol" safety="toxic">
+      <ArticleBody quickAnswer="EXTREMELY TOXIC — Xylitol is arguably the most dangerous common household substance for dogs. Even tiny amounts cause rapid insulin release, leading to life-threatening hypoglycemia within 30 minutes. Larger doses cause liver failure. This is found in sugar-free gum, candy, peanut butter, and many other products." details="Xylitol is a sugar alcohol used as a sweetener in thousands of products. In dogs, it triggers a massive release of insulin from the pancreas, causing blood sugar to drop to dangerous levels (hypoglycemia) within 10-60 minutes. Higher doses can cause acute liver necrosis (liver failure) within 12-48 hours. The toxic dose is as low as 0.1g/kg for hypoglycemia and 0.5g/kg for liver failure. A single piece of sugar-free gum may contain 0.3-1.0g of xylitol. Common products containing xylitol: sugar-free gum and mints, some peanut butter brands, sugar-free candy, baked goods, toothpaste, mouthwash, some vitamins and medications, and protein bars." symptoms="Within 30-60 minutes: vomiting, weakness, loss of coordination, collapse, seizures. Within 12-48 hours (liver failure): jaundice, bruising, bleeding, coma." whatToDo="THIS IS AN EMERGENCY. Call your vet or ASPCA Poison Control (888) 426-4435 IMMEDIATELY. Note what product was consumed and how much. Do NOT induce vomiting unless directed by a vet. Time is critical." safeAlternatives="When buying peanut butter for dogs, always check the label for xylitol. Safe sweetener alternatives in pet treats: honey (small amounts) or no sweetener at all." faqs={faqs} />
+    </ArticleLayout>
+  );
+}
