@@ -1,0 +1,13 @@
+import { ArticleLayout, ArticleBody } from "../../lib/article";
+const faqs = [
+  { q: "My cat licked some bacon grease. Is that dangerous?", a: "A tiny lick is unlikely to cause harm, but bacon grease is extremely high in fat and can trigger vomiting, diarrhea, or pancreatitis if consumed in larger amounts. Clean up any grease spills." },
+  { q: "Can cats eat turkey bacon?", a: "Turkey bacon is slightly leaner but still very high in sodium and often contains preservatives. It's not a safe alternative — the same cautions apply." },
+  { q: "Why does my cat go crazy for bacon?", a: "Cats are attracted to the strong smell of fat and protein in bacon. Their keen sense of smell makes bacon irresistible, but craving something doesn't make it safe." },
+];
+export default function Page() {
+  return (
+    <ArticleLayout title="Can Cats Eat Bacon? Not Recommended | CanMyPetEat" description="Bacon is not recommended for cats due to extremely high sodium and fat content. Learn why this popular treat is risky for felines." canonical="/can-cats-eat/bacon" petType="cat" food="Bacon" safety="caution">
+      <ArticleBody quickAnswer="Not recommended — while a tiny piece won't be immediately toxic, bacon is very high in sodium, fat, and often contains preservatives like sodium nitrite that are harmful to cats. Regular consumption can lead to pancreatitis, obesity, and salt poisoning. Keep bacon away from your cat." details="Bacon poses several health risks for cats. First, the sodium content is extremely high — a single slice contains around 137mg of sodium, while a cat's daily recommended intake is only about 42mg. Excess sodium can cause increased thirst, dehydration, and in severe cases, sodium ion poisoning with symptoms like vomiting, tremors, and seizures. Second, bacon is roughly 40-50% fat, which can trigger pancreatitis — a painful and potentially life-threatening inflammation of the pancreas. Third, processed bacon often contains sodium nitrite, smoke flavoring, and other additives that cats' small bodies cannot process efficiently. Raw bacon adds the risk of parasites and bacterial contamination." symptoms="Excessive thirst, vomiting, diarrhea, lethargy, bloating, abdominal pain" whatToDo="If your cat ate a small piece of bacon, monitor for vomiting or diarrhea but don't panic. Provide fresh water. If your cat consumed a large amount, watch for signs of sodium poisoning (tremors, excessive thirst, lethargy) and contact your vet." safeAlternatives="For a savory, protein-rich treat cats will love: plain cooked chicken breast, freeze-dried chicken treats, small pieces of cooked salmon, or commercial cat treats designed for feline nutrition." faqs={faqs} />
+    </ArticleLayout>
+  );
+}

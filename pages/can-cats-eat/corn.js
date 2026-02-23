@@ -1,0 +1,13 @@
+import { ArticleLayout, ArticleBody } from "../../lib/article";
+const faqs = [
+  { q: "Can cats eat corn on the cob?", a: "The corn kernels are safe, but the cob itself is a serious choking and intestinal blockage hazard. Never let cats chew on corn cobs." },
+  { q: "Is corn in cat food bad?", a: "Corn is commonly used as a filler in cheaper cat foods. While not toxic, it provides mostly carbohydrates which cats don't need in large amounts. Higher-meat cat foods are generally better." },
+  { q: "Can cats eat popcorn?", a: "Plain, air-popped popcorn without salt, butter, or seasoning is not toxic in small amounts, but offers no nutritional value and kernels can be a choking hazard. Not recommended." },
+];
+export default function Page() {
+  return (
+    <ArticleLayout title="Can Cats Eat Corn? Yes, But Limited Nutritional Value | CanMyPetEat" description="Corn is safe for cats but offers little nutrition. Learn about corn in cat food and how to share it safely." canonical="/can-cats-eat/corn" petType="cat" food="Corn" safety="caution">
+      <ArticleBody quickAnswer="Yes, technically safe — plain cooked corn kernels won't poison your cat, but corn offers very little nutritional value for felines. Cats are obligate carnivores and cannot efficiently digest or utilize carbohydrates from corn. It's also a common allergen in cats. A few kernels won't hurt, but don't make it a regular treat." details="Corn is not toxic to cats, but it's essentially empty calories for them. Cats lack the digestive enzymes to efficiently break down and utilize plant-based carbohydrates. Corn is often used as a cheap filler in lower-quality cat foods, contributing to the carbohydrate load without providing meaningful nutrition for carnivores. Some cats are allergic to corn, showing symptoms like itchy skin, ear infections, or digestive issues. Corn on the cob is particularly dangerous — the cob can cause intestinal obstruction if swallowed. Canned corn contains added salt. Creamed corn has dairy and sugar. Butter corn has excess fat. Only plain, cooked kernels are acceptable." symptoms="In allergic cats: itching, skin irritation, ear infections, vomiting, diarrhea" whatToDo="If sharing corn, only offer a few plain cooked kernels. Remove from the cob. No butter, salt, or seasonings. Watch for signs of allergic reaction if it's your cat's first time." safeAlternatives="Better treat options for cats: plain cooked chicken, freeze-dried meat treats, small pieces of cooked fish, or pumpkin (which actually benefits feline digestion unlike corn)." faqs={faqs} />
+    </ArticleLayout>
+  );
+}

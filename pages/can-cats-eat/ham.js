@@ -1,0 +1,13 @@
+import { ArticleLayout, ArticleBody } from "../../lib/article";
+const faqs = [
+  { q: "Can cats eat deli ham?", a: "Deli ham is even worse than regular ham — it's extremely high in sodium, often contains nitrates/nitrites, and may have garlic or onion seasoning. Avoid completely." },
+  { q: "My cat stole a piece of ham. Should I worry?", a: "A single small piece is unlikely to cause serious harm, but watch for excessive thirst, vomiting, or diarrhea. Provide plenty of fresh water." },
+  { q: "What about Christmas/holiday ham?", a: "Holiday ham is typically glazed with sugar, coated in spices, and extremely salty. Keep it well away from cats. The combination of salt, sugar, and spices can cause serious digestive upset." },
+];
+export default function Page() {
+  return (
+    <ArticleLayout title="Can Cats Eat Ham? Not Recommended — Too Salty | CanMyPetEat" description="Ham is not recommended for cats due to very high sodium and fat content. Learn safer protein alternatives for your cat." canonical="/can-cats-eat/ham" petType="cat" food="Ham" safety="caution">
+      <ArticleBody quickAnswer="Not recommended — while ham is not acutely toxic, it's very high in sodium and fat, making it a poor choice for cats. A single slice of ham can contain 300-400mg of sodium, far exceeding a cat's daily needs (about 42mg). Regular consumption risks sodium poisoning, pancreatitis, and obesity." details="Ham is a processed meat that poses several risks to cats. The sodium content is the primary concern — cats are much smaller than humans and far more sensitive to salt. Excess sodium can cause increased thirst, dehydration, elevated blood pressure, and in severe cases, sodium ion poisoning (tremors, seizures, coma). The high fat content in ham can trigger pancreatitis, a painful and potentially life-threatening condition. Processed ham also contains sodium nitrite, preservatives, and often sugar glaze — all unnecessary and potentially harmful to cats. Some hams contain garlic or onion powder in the seasoning, which are toxic to cats. Even 'natural' or 'uncured' ham still has extremely high sodium from the curing process." symptoms="Excessive thirst, vomiting, diarrhea, lethargy, bloating. In severe sodium poisoning: tremors, seizures, elevated body temperature" whatToDo="If your cat ate a small piece, provide plenty of fresh water and monitor. For larger amounts, watch for signs of sodium poisoning and contact your vet if symptoms appear." safeAlternatives="For protein-rich treats cats will love: plain cooked chicken breast, cooked turkey (unseasoned), cooked salmon, or freeze-dried single-ingredient meat treats." faqs={faqs} />
+    </ArticleLayout>
+  );
+}
