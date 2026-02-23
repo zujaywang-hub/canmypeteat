@@ -873,8 +873,8 @@ export default function Home() {
 
           {/* Quick examples */}
           <div style={{ display:"flex", gap:"6px", flexWrap:"wrap", marginBottom:"32px" }}>
-            <span style={{ fontSize:"12px", color:"#475569", padding:"6px 0" }}>Try:</span>
-            {[{ label:"🍫 Chocolate", text:"chocolate, sugar, cocoa butter, milk" }, { label:"🧅 Onion soup", text:"onion, garlic, beef broth, butter, salt, bread, cheese" }, { label:"🐔 Chicken meal", text:"chicken breast, rice, carrots, peas, sweet potato" }, { label:"🏷️ Royal Canin", text:"Royal Canin" }].map((ex) => (
+            <span style={{ fontSize:"12px", color:"#475569", padding:"6px 0" }}>{isCn ? "試試：" : "Try:"}</span>
+            {(isCn ? [{ label:"🍫 巧克力", text:"巧克力, 糖, 可可脂, 牛奶" }, { label:"🧅 洋蔥湯", text:"洋蔥, 大蒜, 牛肉湯, 奶油, 鹽, 麵包, 起司" }, { label:"🐔 雞肉餐", text:"雞胸肉, 白飯, 紅蘿蔔, 豌豆, 地瓜" }, { label:"🏷️ 皇家", text:"Royal Canin" }] : [{ label:"🍫 Chocolate", text:"chocolate, sugar, cocoa butter, milk" }, { label:"🧅 Onion soup", text:"onion, garlic, beef broth, butter, salt, bread, cheese" }, { label:"🐔 Chicken meal", text:"chicken breast, rice, carrots, peas, sweet potato" }, { label:"🏷️ Royal Canin", text:"Royal Canin" }]).map((ex) => (
               <button key={ex.label} onClick={() => { setInputText(ex.text); setResults(null); }}
                 style={{ padding:"6px 12px", borderRadius:"100px", border:"1px solid rgba(255,255,255,0.08)", background:"rgba(255,255,255,0.03)", color:"#94a3b8", cursor:"pointer", fontSize:"12px", fontFamily:"'DM Sans', sans-serif" }}>
                 {ex.label}
@@ -1027,13 +1027,13 @@ export default function Home() {
               
               {/* Dogs */}
               <div style={{ marginBottom:"24px" }}>
-                <h3 style={{ fontSize:"14px", fontWeight:700, color:"#38bdf8", marginBottom:"10px" }}>🐕 Dogs — Can They Eat...</h3>
+                <h3 style={{ fontSize:"14px", fontWeight:700, color:"#38bdf8", marginBottom:"10px" }}>{isCn ? "🐕 狗狗 — 能吃嗎..." : "🐕 Dogs — Can They Eat..."}</h3>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:"6px" }}>
-                  {["apple","almond","asparagus","avocado","bacon","banana","beef","beets","blackberries","blueberry","broccoli","cabbage","cantaloupe","carrot","celery","cheese","cherries","chicken","chocolate","cinnamon","coconut","coconut-oil","corn","cranberries","cucumber","dragon-fruit","duck","durian","edamame","egg","garlic","ginger","grapes","green-beans","guava","honey","ice-cream","kiwi","lamb","lettuce","longan","lychee","mango","mushrooms","noodles","oatmeal","onion","oranges","papaya","passion-fruit","peach","peanut-butter","pear","pineapple","plum","popcorn","pork","potato","pumpkin","raspberry","rice","salmon","sardines","sausage","shrimp","spinach","strawberry","sweet-corn","sweet-potato","taro","tofu","tomato","tuna","turkey","wax-apple","watermelon","yogurt","zucchini"].map((slug) => (
-                    <a key={slug} href={`/can-dogs-eat/${slug}`} style={{ padding:"5px 12px", borderRadius:"100px", background:"rgba(56,189,248,0.08)", border:"1px solid rgba(56,189,248,0.15)", color:"#7dd3fc", fontSize:"12px", textDecoration:"none", transition:"all 0.15s ease", whiteSpace:"nowrap" }}
+                  {[{s:"apple",cn:"蘋果"},{s:"almond",cn:"杏仁"},{s:"asparagus",cn:"蘆筍"},{s:"avocado",cn:"酪梨"},{s:"bacon",cn:"培根"},{s:"banana",cn:"香蕉"},{s:"beef",cn:"牛肉"},{s:"beets",cn:"甜菜根"},{s:"blackberries",cn:"黑莓"},{s:"blueberry",cn:"藍莓"},{s:"broccoli",cn:"花椰菜"},{s:"cabbage",cn:"高麗菜"},{s:"cantaloupe",cn:"哈密瓜"},{s:"carrot",cn:"紅蘿蔔"},{s:"celery",cn:"芹菜"},{s:"cheese",cn:"起司"},{s:"cherries",cn:"櫻桃"},{s:"chicken",cn:"雞肉"},{s:"chocolate",cn:"巧克力"},{s:"cinnamon",cn:"肉桂"},{s:"coconut",cn:"椰子"},{s:"coconut-oil",cn:"椰子油"},{s:"corn",cn:"玉米"},{s:"cranberries",cn:"蔓越莓"},{s:"cucumber",cn:"小黃瓜"},{s:"dragon-fruit",cn:"火龍果"},{s:"duck",cn:"鴨肉"},{s:"durian",cn:"榴槤"},{s:"edamame",cn:"毛豆"},{s:"egg",cn:"雞蛋"},{s:"garlic",cn:"大蒜"},{s:"ginger",cn:"薑"},{s:"grapes",cn:"葡萄"},{s:"green-beans",cn:"四季豆"},{s:"guava",cn:"芭樂"},{s:"honey",cn:"蜂蜜"},{s:"ice-cream",cn:"冰淇淋"},{s:"kiwi",cn:"奇異果"},{s:"lamb",cn:"羊肉"},{s:"lettuce",cn:"生菜"},{s:"longan",cn:"龍眼"},{s:"lychee",cn:"荔枝"},{s:"mango",cn:"芒果"},{s:"mushrooms",cn:"蘑菇"},{s:"noodles",cn:"麵條"},{s:"oatmeal",cn:"燕麥"},{s:"onion",cn:"洋蔥"},{s:"oranges",cn:"柳橙"},{s:"papaya",cn:"木瓜"},{s:"passion-fruit",cn:"百香果"},{s:"peach",cn:"水蜜桃"},{s:"peanut-butter",cn:"花生醬"},{s:"pear",cn:"梨子"},{s:"pineapple",cn:"鳳梨"},{s:"plum",cn:"李子"},{s:"popcorn",cn:"爆米花"},{s:"pork",cn:"豬肉"},{s:"potato",cn:"馬鈴薯"},{s:"pumpkin",cn:"南瓜"},{s:"raspberry",cn:"覆盆子"},{s:"rice",cn:"白飯"},{s:"salmon",cn:"鮭魚"},{s:"sardines",cn:"沙丁魚"},{s:"sausage",cn:"香腸"},{s:"shrimp",cn:"蝦子"},{s:"spinach",cn:"菠菜"},{s:"strawberry",cn:"草莓"},{s:"sweet-corn",cn:"甜玉米"},{s:"sweet-potato",cn:"地瓜"},{s:"taro",cn:"芋頭"},{s:"tofu",cn:"豆腐"},{s:"tomato",cn:"番茄"},{s:"tuna",cn:"鮪魚"},{s:"turkey",cn:"火雞肉"},{s:"wax-apple",cn:"蓮霧"},{s:"watermelon",cn:"西瓜"},{s:"yogurt",cn:"優格"},{s:"zucchini",cn:"櫛瓜"}].map((item) => (
+                    <a key={item.s} href={`/can-dogs-eat/${item.s}`} style={{ padding:"5px 12px", borderRadius:"100px", background:"rgba(56,189,248,0.08)", border:"1px solid rgba(56,189,248,0.15)", color:"#7dd3fc", fontSize:"12px", textDecoration:"none", transition:"all 0.15s ease", whiteSpace:"nowrap" }}
                       onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(56,189,248,0.18)"; }}
                       onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(56,189,248,0.08)"; }}>
-                      {slug.replace(/-/g, " ")}
+                      {isCn ? item.cn : item.s.replace(/-/g, " ")}
                     </a>
                   ))}
                 </div>
@@ -1041,13 +1041,13 @@ export default function Home() {
 
               {/* Cats */}
               <div style={{ marginBottom:"24px" }}>
-                <h3 style={{ fontSize:"14px", fontWeight:700, color:"#f472b6", marginBottom:"10px" }}>🐈 Cats — Can They Eat...</h3>
+                <h3 style={{ fontSize:"14px", fontWeight:700, color:"#f472b6", marginBottom:"10px" }}>{isCn ? "🐈 貓咪 — 能吃嗎..." : "🐈 Cats — Can They Eat..."}</h3>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:"6px" }}>
-                  {["apple","asparagus","avocado","bacon","banana","beef","blueberry","bread","broccoli","cantaloupe","carrot","cheese","chicken","chocolate","coconut","corn","cucumber","dragon-fruit","duck","egg","garlic","green-bean","guava","ham","ice-cream","kiwi","lamb","lettuce","liver","longan","lychee","mango","melon","milk","onion","passion-fruit","pea","peach","pineapple","pork","potato","pumpkin","rice","salmon","sardine","shrimp","spinach","strawberry","sweet-potato","taro","tuna-canned","tuna-cooked","tuna-raw","turkey","wax-apple","watermelon","yogurt","zucchini"].map((slug) => (
-                    <a key={slug} href={`/can-cats-eat/${slug}`} style={{ padding:"5px 12px", borderRadius:"100px", background:"rgba(244,114,182,0.08)", border:"1px solid rgba(244,114,182,0.15)", color:"#f9a8d4", fontSize:"12px", textDecoration:"none", transition:"all 0.15s ease", whiteSpace:"nowrap" }}
+                  {[{s:"apple",cn:"蘋果"},{s:"asparagus",cn:"蘆筍"},{s:"avocado",cn:"酪梨"},{s:"bacon",cn:"培根"},{s:"banana",cn:"香蕉"},{s:"beef",cn:"牛肉"},{s:"blueberry",cn:"藍莓"},{s:"bread",cn:"麵包"},{s:"broccoli",cn:"花椰菜"},{s:"cantaloupe",cn:"哈密瓜"},{s:"carrot",cn:"紅蘿蔔"},{s:"cheese",cn:"起司"},{s:"chicken",cn:"雞肉"},{s:"chocolate",cn:"巧克力"},{s:"coconut",cn:"椰子"},{s:"corn",cn:"玉米"},{s:"cucumber",cn:"小黃瓜"},{s:"dragon-fruit",cn:"火龍果"},{s:"duck",cn:"鴨肉"},{s:"egg",cn:"雞蛋"},{s:"garlic",cn:"大蒜"},{s:"green-bean",cn:"四季豆"},{s:"guava",cn:"芭樂"},{s:"ham",cn:"火腿"},{s:"ice-cream",cn:"冰淇淋"},{s:"kiwi",cn:"奇異果"},{s:"lamb",cn:"羊肉"},{s:"lettuce",cn:"生菜"},{s:"liver",cn:"肝臟"},{s:"longan",cn:"龍眼"},{s:"lychee",cn:"荔枝"},{s:"mango",cn:"芒果"},{s:"melon",cn:"甜瓜"},{s:"milk",cn:"牛奶"},{s:"onion",cn:"洋蔥"},{s:"passion-fruit",cn:"百香果"},{s:"pea",cn:"豌豆"},{s:"peach",cn:"水蜜桃"},{s:"pineapple",cn:"鳳梨"},{s:"pork",cn:"豬肉"},{s:"potato",cn:"馬鈴薯"},{s:"pumpkin",cn:"南瓜"},{s:"rice",cn:"白飯"},{s:"salmon",cn:"鮭魚"},{s:"sardine",cn:"沙丁魚"},{s:"shrimp",cn:"蝦子"},{s:"spinach",cn:"菠菜"},{s:"strawberry",cn:"草莓"},{s:"sweet-potato",cn:"地瓜"},{s:"taro",cn:"芋頭"},{s:"tuna-canned",cn:"鮪魚罐頭"},{s:"tuna-cooked",cn:"熟鮪魚"},{s:"tuna-raw",cn:"生鮪魚"},{s:"turkey",cn:"火雞肉"},{s:"wax-apple",cn:"蓮霧"},{s:"watermelon",cn:"西瓜"},{s:"yogurt",cn:"優格"},{s:"zucchini",cn:"櫛瓜"}].map((item) => (
+                    <a key={item.s} href={`/can-cats-eat/${item.s}`} style={{ padding:"5px 12px", borderRadius:"100px", background:"rgba(244,114,182,0.08)", border:"1px solid rgba(244,114,182,0.15)", color:"#f9a8d4", fontSize:"12px", textDecoration:"none", transition:"all 0.15s ease", whiteSpace:"nowrap" }}
                       onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(244,114,182,0.18)"; }}
                       onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(244,114,182,0.08)"; }}>
-                      {slug.replace(/-/g, " ")}
+                      {isCn ? item.cn : item.s.replace(/-/g, " ")}
                     </a>
                   ))}
                 </div>
@@ -1055,17 +1055,17 @@ export default function Home() {
 
               {/* Brands */}
               <div style={{ marginBottom:"24px" }}>
-                <h3 style={{ fontSize:"14px", fontWeight:700, color:"#fbbf24", marginBottom:"10px" }}>🏷️ Brand Reviews</h3>
+                <h3 style={{ fontSize:"14px", fontWeight:700, color:"#fbbf24", marginBottom:"10px" }}>{isCn ? "🏷️ 品牌評比" : "🏷️ Brand Reviews"}</h3>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:"6px" }}>
                   {[
-                    { slug:"orijen", label:"Orijen (A)" },{ slug:"acana", label:"ACANA (A-)" },{ slug:"blue-buffalo", label:"Blue Buffalo (A-)" },
-                    { slug:"hills-science-diet", label:"Hill's (B+)" },{ slug:"royal-canin", label:"Royal Canin (B)" },{ slug:"iams", label:"IAMS (B)" },{ slug:"sheba", label:"Sheba (B)" },{ slug:"purina", label:"Purina (B-)" },
-                    { slug:"whiskas", label:"Whiskas (C)" },{ slug:"friskies", label:"Friskies (C)" },{ slug:"meow-mix", label:"Meow Mix (C)" },
+                    { slug:"orijen", label:"Orijen (A)", cn:"渴望 Orijen (A)" },{ slug:"acana", label:"ACANA (A-)", cn:"愛肯拿 ACANA (A-)" },{ slug:"blue-buffalo", label:"Blue Buffalo (A-)", cn:"藍饌 Blue Buffalo (A-)" },
+                    { slug:"hills-science-diet", label:"Hill's (B+)", cn:"希爾思 Hill's (B+)" },{ slug:"royal-canin", label:"Royal Canin (B)", cn:"皇家 Royal Canin (B)" },{ slug:"iams", label:"IAMS (B)", cn:"愛慕思 IAMS (B)" },{ slug:"sheba", label:"Sheba (B)", cn:"Sheba (B)" },{ slug:"purina", label:"Purina (B-)", cn:"普瑞納 Purina (B-)" },
+                    { slug:"whiskas", label:"Whiskas (C)", cn:"偉嘉 Whiskas (C)" },{ slug:"friskies", label:"Friskies (C)", cn:"喜躍 Friskies (C)" },{ slug:"meow-mix", label:"Meow Mix (C)", cn:"Meow Mix (C)" },
                   ].map((b) => (
                     <a key={b.slug} href={`/brand-review/${b.slug}`} style={{ padding:"5px 12px", borderRadius:"100px", background:"rgba(251,191,36,0.08)", border:"1px solid rgba(251,191,36,0.15)", color:"#fcd34d", fontSize:"12px", textDecoration:"none", transition:"all 0.15s ease", whiteSpace:"nowrap" }}
                       onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(251,191,36,0.18)"; }}
                       onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(251,191,36,0.08)"; }}>
-                      {b.label}
+                      {isCn ? b.cn : b.label}
                     </a>
                   ))}
                 </div>
@@ -1073,18 +1073,18 @@ export default function Home() {
 
               {/* Safety Guides */}
               <div style={{ marginBottom:"24px" }}>
-                <h3 style={{ fontSize:"14px", fontWeight:700, color:"#f87171", marginBottom:"10px" }}>📋 Safety Guides</h3>
+                <h3 style={{ fontSize:"14px", fontWeight:700, color:"#f87171", marginBottom:"10px" }}>{isCn ? "📋 安全指南" : "📋 Safety Guides"}</h3>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:"6px" }}>
                   {[
-                    { slug:"foods-toxic-to-dogs", label:"Foods Toxic to Dogs" },{ slug:"foods-toxic-to-cats", label:"Foods Toxic to Cats" },
-                    { slug:"safe-fruits-for-dogs", label:"Safe Fruits for Dogs" },{ slug:"safe-fruits-for-cats", label:"Safe Fruits for Cats" },
-                    { slug:"holiday-food-dangers", label:"Holiday Food Dangers" },{ slug:"cat-safe-plants", label:"Cat-Safe Plants" },
-                    { slug:"pet-emergency-contacts", label:"Emergency Contacts" },
+                    { slug:"foods-toxic-to-dogs", label:"Foods Toxic to Dogs", cn:"對狗有毒的食物" },{ slug:"foods-toxic-to-cats", label:"Foods Toxic to Cats", cn:"對貓有毒的食物" },
+                    { slug:"safe-fruits-for-dogs", label:"Safe Fruits for Dogs", cn:"狗狗安全水果" },{ slug:"safe-fruits-for-cats", label:"Safe Fruits for Cats", cn:"貓咪安全水果" },
+                    { slug:"holiday-food-dangers", label:"Holiday Food Dangers", cn:"節日食物危險" },{ slug:"cat-safe-plants", label:"Cat-Safe Plants", cn:"對貓安全的植物" },
+                    { slug:"pet-emergency-contacts", label:"Emergency Contacts", cn:"寵物急救電話" },
                   ].map((g) => (
                     <a key={g.slug} href={`/pet-safety/${g.slug}`} style={{ padding:"5px 12px", borderRadius:"100px", background:"rgba(248,113,113,0.08)", border:"1px solid rgba(248,113,113,0.15)", color:"#fca5a5", fontSize:"12px", textDecoration:"none", transition:"all 0.15s ease", whiteSpace:"nowrap" }}
                       onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(248,113,113,0.18)"; }}
                       onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(248,113,113,0.08)"; }}>
-                      {g.label}
+                      {isCn ? g.cn : g.label}
                     </a>
                   ))}
                 </div>
@@ -1093,11 +1093,11 @@ export default function Home() {
 
             <footer style={{ textAlign:"center", padding:"40px 0 60px", color:"#334155", fontSize:"13px" }}>
               <div style={{ marginBottom:"16px", display:"flex", justifyContent:"center", gap:"24px", flexWrap:"wrap" }}>
-                {["200+ articles", "95 dog foods", "71 cat foods", "14 brand reviews", "100% free"].map((f) => (
+                {(isCn ? ["200+ 篇文章", "95 種狗食物", "71 種貓食物", "14 個品牌評比", "100% 免費"] : ["200+ articles", "95 dog foods", "71 cat foods", "14 brand reviews", "100% free"]).map((f) => (
                   <span key={f} style={{ display:"flex", alignItems:"center", gap:"6px" }}><span style={{ color:"#38bdf8" }}>✦</span> {f}</span>
                 ))}
               </div>
-              <p style={{ margin:0 }}>Built with ❤️ for pet parents everywhere</p>
+              <p style={{ margin:0 }}>{isCn ? "用 ❤️ 為全世界的毛孩爸媽打造" : "Built with ❤️ for pet parents everywhere"}</p>
             </footer>
             </>
           )}
