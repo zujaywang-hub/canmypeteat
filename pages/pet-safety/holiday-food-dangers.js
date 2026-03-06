@@ -1,0 +1,13 @@
+import { ArticleLayout, ArticleBody } from "../../lib/article";
+const faqs = [
+  { q: "What's the most dangerous holiday food for pets?", a: "For dogs: chocolate and xylitol in sugar-free desserts. For cats: lilies used in decorations and onion/garlic in stuffing and gravy." },
+  { q: "Can I give my pet any holiday food?", a: "Yes! Plain cooked turkey breast (no skin/bones/seasoning), plain sweet potato, plain green beans, plain carrots, and plain pumpkin are all safe." },
+  { q: "What should I do if my pet eats something at a holiday party?", a: "ASPCA Poison Control: (888) 426-4435. Note what was eaten, how much, and when. Keep the packaging if possible." },
+];
+export default function Page() {
+  return (
+    <ArticleLayout title="Holiday Foods That Are Dangerous for Pets | CanMyPetEat" description="Complete guide to holiday food dangers for dogs and cats. From Thanksgiving to Christmas, keep your pets safe." canonical="/pet-safety/holiday-food-dangers" petType="dog" food="Holiday Food Dangers" safety="toxic">
+      <ArticleBody quickAnswer="Holiday season is the most dangerous time for pet food poisoning. Top dangers: chocolate, xylitol in desserts, cooked bones, onion/garlic in stuffing, grapes in fruit salads, alcohol, macadamia nuts, bread dough, and lilies in decorations." details="THANKSGIVING DANGERS: Seasoned turkey (garlic, onion, butter), turkey skin (pancreatitis), cooked turkey bones (splinter), stuffing (onion, garlic, raisins), gravy (onion, garlic, fat), cranberry sauce with grapes, pumpkin pie (nutmeg, sugar), yeast rolls (raw dough). CHRISTMAS DANGERS: Chocolate (all forms), fruitcake (raisins, alcohol), sugar-free candy/gum (xylitol), eggnog (alcohol, dairy), macadamia nuts, ham (sodium), alcohol in any form, lilies in flower arrangements (fatal to cats). GENERAL PARTY DANGERS: Guests feeding pets table scraps, unattended food plates, garbage can raiding, cocktails left within reach. SAFE HOLIDAY FOODS TO SHARE: Plain cooked turkey breast, plain sweet potato, plain green beans, plain carrots, plain pumpkin, plain cooked rice." symptoms="Vary by food. Chocolate: vomiting, tremors. Xylitol: collapse within minutes. Bones: choking, internal puncture. Onion/garlic: delayed anemia." whatToDo="Keep ASPCA Poison Control number handy: (888) 426-4435. Inform guests not to feed pets. Secure trash cans. Keep desserts and chocolate out of reach. Check flower arrangements for lilies (cats). Have your emergency vet's number ready." safeAlternatives="Set aside a small plate of plain, unseasoned pet-safe foods before adding seasonings to the holiday meal." faqs={faqs} />
+    </ArticleLayout>
+  );
+}

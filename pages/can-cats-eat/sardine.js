@@ -1,0 +1,13 @@
+import { ArticleLayout, ArticleBody } from "../../lib/article";
+const faqs = [
+  { q: "Can cats eat sardines every day?", a: "No — while sardines are nutritious, daily feeding can lead to excessive sodium intake (if canned), too much fat, and potential thiamine issues. Once or twice a week in small amounts is ideal." },
+  { q: "Canned sardines in oil vs water for cats?", a: "Always choose sardines packed in water with no added salt. Sardines in oil add unnecessary fat and calories. Sardines in tomato sauce often contain onion and spices — avoid those completely." },
+  { q: "Can sardines help my cat's coat?", a: "Yes — the omega-3 fatty acids (EPA and DHA) in sardines can improve skin and coat health, reduce inflammation, and support joint health. They're one of the best natural omega-3 sources for cats." },
+];
+export default function Page() {
+  return (
+    <ArticleLayout title="Can Cats Eat Sardines? Yes — Great Omega-3 Source | CanMyPetEat" description="Sardines are safe and nutritious for cats. Rich in omega-3s and low in mercury. Learn the best way to serve them." canonical="/can-cats-eat/sardine" petType="cat" food="Sardine" safety="safe">
+      <ArticleBody quickAnswer="Yes — sardines are an excellent treat for cats! They're rich in omega-3 fatty acids (EPA and DHA), high in protein, and lower in mercury than larger fish like tuna. Choose sardines canned in water with no added salt. Most cats go absolutely crazy for sardines." details="Sardines are one of the best fish options for cats. They're small, low on the food chain, and therefore accumulate far less mercury than larger fish like tuna or salmon. They're packed with omega-3 fatty acids which support skin and coat health, reduce inflammation, and may benefit cats with arthritis or joint issues. Sardines also provide vitamin D, vitamin B12, calcium (from the bones), and high-quality protein. The strong fishy smell makes them irresistible to most cats. Choose canned sardines in water with no added salt — sardines in oil add unnecessary fat, and those in tomato sauce often contain onion, garlic, or spices that are toxic to cats. Fresh sardines are also excellent if available — cook them plain." whatToDo="Drain canned sardines packed in water. Break into small pieces or mash with a fork. Serve a small portion (half to one sardine) as a treat or meal topper. For fresh sardines: bake or steam plain until fully cooked, debone, and serve in small pieces." safeAlternatives="Other great fish options for cats: cooked salmon (omega-3 rich), cooked cod (mild, lean), cooked shrimp (low calorie), and small amounts of canned tuna in water (limit due to higher mercury)." faqs={faqs} />
+    </ArticleLayout>
+  );
+}

@@ -1,0 +1,13 @@
+import { ArticleLayout, ArticleBody } from "../../lib/article";
+const faqs = [
+  { q: "Do cats actually eat chocolate?", a: "Rarely — cats can't taste sweetness, so they're less attracted to chocolate than dogs. However, some cats may eat chocolate-containing baked goods or lap up chocolate milk." },
+  { q: "How much chocolate is dangerous for cats?", a: "Cats are more sensitive than dogs. Even small amounts of dark chocolate can be dangerous. As little as 0.2 ounces of baking chocolate per pound of body weight can be lethal." },
+  { q: "Are all types of chocolate equally dangerous?", a: "No. Baking chocolate and dark chocolate are most dangerous. Milk chocolate is less concentrated. White chocolate has minimal theobromine but is still unhealthy due to fat and sugar." },
+];
+export default function Page() {
+  return (
+    <ArticleLayout title="My Cat Ate Chocolate — What To Do | CanMyPetEat" description="Chocolate is toxic to cats. Cats are more sensitive than dogs. Learn emergency steps and toxic amounts." canonical="/pet-safety/cat-ate-chocolate" petType="cat" food="Chocolate (Emergency)" safety="toxic">
+      <ArticleBody quickAnswer="Chocolate is toxic to cats — and cats are actually MORE sensitive to theobromine than dogs. While cats rarely seek out chocolate (they can't taste sweet), accidental ingestion requires immediate action. Call your vet or ASPCA Poison Control (888) 426-4435." details="Chocolate contains theobromine and caffeine, both toxic to cats. Cats metabolize theobromine even more slowly than dogs, making them more vulnerable per body weight. Additionally, cats are much smaller than most dogs, so even a small amount of chocolate represents a larger relative dose. Dark chocolate and baking cocoa are the most dangerous forms. While cats naturally avoid chocolate because they can't taste sweetness, they may consume it in baked goods, chocolate milk, cocoa powder mixed in foods, or out of curiosity. Given the average cat's small size (8-12 pounds), even small amounts of dark chocolate should be taken seriously." symptoms="Early (1-4 hours): restlessness, vomiting, diarrhea. Moderate: rapid breathing, increased heart rate, excessive urination. Severe: muscle tremors, seizures, heart arrhythmia, death." whatToDo="STEP 1: Note the type of chocolate and approximate amount consumed. STEP 2: Call your vet or ASPCA Poison Control (888) 426-4435. STEP 3: Due to cats' small size, even small amounts warrant a vet call. STEP 4: Treatment may include induced vomiting, activated charcoal, and IV fluids. STEP 5: Do not wait for symptoms to appear." safeAlternatives="Cats don't need sweet treats. Offer small pieces of cooked chicken, fish, or commercial cat treats instead." faqs={faqs} />
+    </ArticleLayout>
+  );
+}

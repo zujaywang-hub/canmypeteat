@@ -1,0 +1,13 @@
+import { ArticleLayout, ArticleBody } from "../../lib/article";
+const faqs = [
+  { q: "Can cats eat raw sweet potato?", a: "No — raw sweet potato is very hard and difficult for cats to digest. It can also cause intestinal blockage. Always cook sweet potato thoroughly before offering." },
+  { q: "Sweet potato vs pumpkin for cats?", a: "Both are safe and fiber-rich. Pumpkin is generally preferred by vets for digestive issues because it's lower in calories and sugar. Sweet potato has more vitamins but higher sugar content." },
+  { q: "Can cats eat sweet potato skin?", a: "It's best to remove the skin. While not toxic, sweet potato skin is tough and hard for cats to digest, and may have been treated with pesticides." },
+];
+export default function Page() {
+  return (
+    <ArticleLayout title="Can Cats Eat Sweet Potato? Yes — Cooked & Plain | CanMyPetEat" description="Cooked sweet potato is safe for cats in small amounts. A fiber-rich, nutritious treat when served plain." canonical="/can-cats-eat/sweet-potato" petType="cat" food="Sweet Potato" safety="safe">
+      <ArticleBody quickAnswer="Yes — plain cooked sweet potato is safe for cats in small amounts. It's a good source of dietary fiber, vitamin A (as beta-carotene), vitamin C, and potassium. Note that cats can't convert beta-carotene to vitamin A like humans can, so the vitamin benefits are limited. Serve mashed or diced, always cooked, never raw." details="Sweet potato is non-toxic to cats and is actually included as an ingredient in many premium grain-free cat foods. It provides dietary fiber which can help with digestion and hairball management. Sweet potato is also rich in antioxidants. However, as obligate carnivores, cats don't need carbohydrate-heavy foods in their diet. Sweet potato is relatively high in natural sugar compared to other vegetables, so portions should be kept small to avoid unnecessary calorie intake and blood sugar spikes. Always cook sweet potato thoroughly — raw sweet potato is very hard, difficult to digest, and can cause intestinal issues. Never serve candied sweet potato, sweet potato casserole, or any preparation with marshmallow, brown sugar, butter, or spices." whatToDo="Bake, boil, or steam sweet potato until very soft. Let cool completely. Remove skin. Mash or dice into small pieces. Offer 1-2 teaspoons as an occasional treat. No butter, sugar, marshmallow, cinnamon, or any toppings." safeAlternatives="Other safe, fiber-rich options for cats: plain canned pumpkin (vet-recommended for digestion), cooked carrots, steamed green beans, and cooked zucchini." faqs={faqs} />
+    </ArticleLayout>
+  );
+}

@@ -1,0 +1,13 @@
+import { ArticleLayout, ArticleBody } from "../../lib/article";
+const faqs = [
+  { q: "Can cats eat raw potato?", a: "Absolutely not — raw potatoes contain solanine, a toxic glycoalkaloid that can cause severe GI distress, nervous system damage, and even death in cats. Only fully cooked potato is safe." },
+  { q: "Can cats eat french fries?", a: "No — french fries are deep-fried in oil and covered in salt. The combination of high fat and sodium is dangerous for cats. Even unsalted fries are too greasy." },
+  { q: "Can cats eat sweet potato?", a: "Yes, cooked sweet potato is safe in small amounts and is actually more nutritious than white potato. Serve plain and mashed." },
+];
+export default function Page() {
+  return (
+    <ArticleLayout title="Can Cats Eat Potatoes? Cooked Only — Raw Is Toxic | CanMyPetEat" description="Cooked plain potato is safe for cats in small amounts, but raw potato is toxic. Learn the important difference." canonical="/can-cats-eat/potato" petType="cat" food="Potato" safety="caution">
+      <ArticleBody quickAnswer="Only cooked — plain cooked potato is safe for cats in small amounts, but RAW potato is TOXIC. Raw potatoes contain solanine, a poisonous glycoalkaloid that can cause severe gastrointestinal and neurological symptoms. Green potatoes and potato sprouts are especially dangerous. Always cook thoroughly before sharing." details="The key distinction with potatoes is raw vs. cooked. Raw potatoes, green potatoes, and potato plants contain solanine and chaconine — toxic glycoalkaloids that can cause vomiting, diarrhea, abdominal pain, lethargy, and in severe cases, neurological symptoms and death. Cooking breaks down most of these toxins, making the potato safe. However, even cooked potato offers very little nutritional value for cats — it's mostly starch and carbohydrates, which obligate carnivores don't need. Mashed potatoes with milk, butter, garlic, or chives are all dangerous for cats due to lactose, excess fat, and toxic allium ingredients. Potato chips, fries, and baked potatoes with toppings should all be avoided." symptoms="Raw potato: vomiting, diarrhea, drooling, abdominal pain, lethargy, weakness, tremors" whatToDo="If cooking for your cat: boil or bake potato until fully soft, let cool, and serve a small plain portion mashed or diced. No butter, cream, salt, garlic, chives, or any toppings. If your cat ate raw potato, green potato, or potato sprouts, contact your vet immediately." safeAlternatives="Better options: cooked pumpkin (excellent for digestion), cooked sweet potato (more nutritious), steamed carrots, or plain cooked rice. For proper nutrition, stick to meat-based foods." faqs={faqs} />
+    </ArticleLayout>
+  );
+}

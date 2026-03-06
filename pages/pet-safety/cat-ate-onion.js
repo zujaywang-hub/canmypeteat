@@ -1,0 +1,13 @@
+import { ArticleLayout, ArticleBody } from "../../lib/article";
+const faqs = [
+  { q: "How much onion is toxic to cats?", a: "Cats are MORE sensitive than dogs. As little as 5 grams of onion per kilogram of body weight can cause damage. For a 10-pound cat, that's less than half a tablespoon of onion." },
+  { q: "Is cooked onion safer for cats?", a: "No. Cooking does not destroy the toxic compounds in onions. All forms — raw, cooked, powdered, dehydrated — are equally dangerous." },
+  { q: "What about garlic?", a: "Garlic is 5x more potent than onions for cats. Even tiny amounts of garlic are dangerous. Many seasonings contain garlic powder." },
+];
+export default function Page() {
+  return (
+    <ArticleLayout title="My Cat Ate Onion or Garlic — Emergency Steps | CanMyPetEat" description="Onions and garlic are highly toxic to cats. Cats are more sensitive than dogs. Learn emergency steps." canonical="/pet-safety/cat-ate-onion" petType="cat" food="Onion/Garlic (Emergency)" safety="toxic">
+      <ArticleBody quickAnswer="Cats are EXTREMELY sensitive to onion and garlic — more so than dogs. All alliums (onion, garlic, leek, chive, shallot) destroy red blood cells causing potentially fatal anemia. Contact your vet immediately if your cat consumed any amount." details="Cats are particularly vulnerable to allium toxicity because they have a specific type of hemoglobin that is more susceptible to oxidative damage. The toxic compounds (thiosulphates and disulfides) damage red blood cells, forming Heinz bodies and causing hemolytic anemia. Garlic is approximately 5 times more toxic than onion to cats. The damage is cumulative — even small amounts over several days can cause toxicity. All forms are dangerous: raw, cooked, powdered, dehydrated, in sauces, soups, baby food, and seasonings. Many prepared foods contain hidden onion or garlic powder. Symptoms may not appear for 2-5 days after ingestion." symptoms="Day 1-2: may appear normal (deceptive). Day 2-5: lethargy, weakness, decreased appetite, pale or yellow gums, rapid breathing, dark red-brown urine, elevated heart rate, collapse." whatToDo="STEP 1: Call your vet immediately, even for small amounts. STEP 2: Note what was consumed and how much. STEP 3: Blood tests may be needed to check red blood cell count. STEP 4: Keep your cat hydrated. STEP 5: Monitor for several days — symptoms are often delayed. Severe cases may require blood transfusion." safeAlternatives="Season your cat's food with nothing. Cats are perfectly happy with plain cooked meat. If adding flavor, a tiny amount of plain chicken broth (with no onion/garlic) is safe." faqs={faqs} />
+    </ArticleLayout>
+  );
+}

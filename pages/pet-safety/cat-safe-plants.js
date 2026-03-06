@@ -1,0 +1,13 @@
+import { ArticleLayout, ArticleBody } from "../../lib/article";
+const faqs = [
+  { q: "What's the most dangerous plant for cats?", a: "Lilies (Easter, Tiger, Asiatic, Daylily) are the #1 killer — even pollen can cause fatal kidney failure." },
+  { q: "Is lavender safe for cats?", a: "The plant itself is mildly toxic if eaten in quantity. Lavender essential oil is much more dangerous — never use around cats." },
+  { q: "Where can I check if a plant is safe?", a: "The ASPCA maintains a comprehensive searchable database at aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants." },
+];
+export default function Page() {
+  return (
+    <ArticleLayout title="Cat-Safe vs Toxic Plants — Complete Household Guide | CanMyPetEat" description="Which houseplants are safe for cats? Complete list of safe and toxic plants every cat owner needs." canonical="/pet-safety/cat-safe-plants" petType="cat" food="Safe & Toxic Plants" safety="toxic">
+      <ArticleBody quickAnswer="SAFE plants: spider plant, Boston fern, orchid, African violet, roses, sunflowers, cat grass, bamboo palm, areca palm, prayer plant. TOXIC plants: lilies (FATAL), tulips, azaleas, sago palm, oleander, dieffenbachia, pothos, philodendron, aloe vera, peace lily." details="CAT-SAFE HOUSEPLANTS: Spider plant (cats love it), Boston fern, orchids, African violets, roses (no thorns), sunflowers, cat grass/wheatgrass, bamboo palm, areca palm, prayer plant (Calathea), peperomia, polka dot plant, parlor palm, cast iron plant, Christmas cactus. DEADLY TOXIC PLANTS: TRUE LILIES — Easter lily, Tiger lily, Asiatic lily, Daylily, Japanese show lily, Stargazer lily. ALL parts including pollen and vase water cause FATAL kidney failure. Even brief exposure can be lethal. OTHER TOXIC PLANTS: Sago palm (liver failure), oleander (heart failure), tulips (GI and cardiac), azaleas/rhododendron (cardiac), dieffenbachia (oral burning), pothos/devil's ivy (oral burning), philodendron (oral burning), English ivy, yew, foxglove, autumn crocus, cyclamen, kalanchoe." symptoms="Varies by plant. Lilies: vomiting, then apparent improvement, then kidney failure within 72 hours. Sago palm: vomiting, liver failure. Dieffenbachia/pothos: immediate mouth pain, drooling." whatToDo="If your cat ate any plant you're unsure about, contact ASPCA Poison Control (888) 426-4435 or your vet. For lilies specifically, rush to the emergency vet IMMEDIATELY." safeAlternatives="Cat grass (wheatgrass) is the best option — purpose-grown for cats to safely nibble on. Spider plants are also cat-favorites and completely safe." faqs={faqs} />
+    </ArticleLayout>
+  );
+}
