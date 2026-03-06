@@ -1,6 +1,11 @@
 const SITE_URL = "https://canmypeteat.app";
 const pages = [
   { url: "/", priority: "1.0", changefreq: "weekly" },
+  // Category index pages (hub pages)
+  { url: "/can-dogs-eat", priority: "0.9", changefreq: "weekly" },
+  { url: "/can-cats-eat", priority: "0.9", changefreq: "weekly" },
+  { url: "/pet-safety", priority: "0.9", changefreq: "weekly" },
+  { url: "/brand-review", priority: "0.9", changefreq: "weekly" },
   { url: "/can-dogs-eat/chocolate", priority: "0.8", changefreq: "monthly" },
   { url: "/can-dogs-eat/grapes", priority: "0.8", changefreq: "monthly" },
   { url: "/can-dogs-eat/onions", priority: "0.8", changefreq: "monthly" },
